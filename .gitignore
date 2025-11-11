@@ -1,0 +1,17 @@
+node_modules/
+.env
+# Ignorar variações de env locais, mas permitir o exemplo
+.env.*
+!.env.example
+*.log
+.DS_Store
+dist/
+build/
+.vscode/
+.idea/
+# Arquivos de credenciais locais
+credenciais.json
+credenciais.*.json
+*.pem
+*.key
+*.pfx
