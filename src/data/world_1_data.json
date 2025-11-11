@@ -1,0 +1,1633 @@
+{
+  "id": "world_1",
+  "name": "Vale de Eldoria",
+  "description": "Um vale verdejante cercado por montanhas, lar de vilas pacíficas e florestas misteriosas. O lugar perfeito para aventureiros iniciantes.",
+  "levelRange": {
+    "min": 1,
+    "max": 15
+  },
+  "emoji": "🌲",
+  "theme": "medieval_forest",
+  
+  "locations": {
+    "village_square": {
+      "id": "village_square",
+      "name": "Praça da Vila",
+      "description": "O coração da vila de Eldoria. Mercadores vendem seus produtos enquanto crianças brincam na fonte central.",
+      "emoji": "🏘️",
+      "level": 1,
+      "dangerLevel": 1,
+      "ambience": "peaceful",
+      "encounters": {
+        "combat": 0.30,
+        "chest": 0.25,
+        "npc": 0.25,
+        "special": 0.10,
+        "rest": 0.10
+      },
+      "enemies": ["slime", "rat", "wild_dog"],
+      "npcs": ["old_merchant", "village_elder", "blacksmith_apprentice"]
+    },
+    
+    "green_meadow": {
+      "id": "green_meadow",
+      "name": "Prado Verdejante",
+      "description": "Campos abertos cobertos de flores silvestres. O vento suave traz o cheiro de primavera.",
+      "emoji": "🌾",
+      "level": 3,
+      "dangerLevel": 2,
+      "ambience": "calm",
+      "encounters": {
+        "combat": 0.45,
+        "chest": 0.20,
+        "npc": 0.15,
+        "special": 0.10,
+        "rest": 0.10
+      },
+      "enemies": ["slime", "wild_dog", "goblin_scout", "giant_bee"],
+      "npcs": ["wandering_bard", "herbalist"]
+    },
+    
+    "dark_forest": {
+      "id": "dark_forest",
+      "name": "Floresta Sombria",
+      "description": "Árvores antigas bloqueiam a luz do sol. Sons estranhos ecoam entre as árvores retorcidas.",
+      "emoji": "🌲",
+      "level": 5,
+      "dangerLevel": 3,
+      "ambience": "ominous",
+      "encounters": {
+        "combat": 0.60,
+        "chest": 0.15,
+        "npc": 0.10,
+        "special": 0.10,
+        "rest": 0.05
+      },
+      "enemies": ["goblin_warrior", "wolf", "spider", "forest_troll"],
+      "npcs": ["lost_traveler", "mysterious_witch"]
+    },
+    
+    "abandoned_mine": {
+      "id": "abandoned_mine",
+      "name": "Mina Abandonada",
+      "description": "Túneis escuros e úmidos que foram abandonados há décadas. Criaturas das profundezas agora habitam aqui.",
+      "emoji": "⛏️",
+      "level": 8,
+      "dangerLevel": 4,
+      "ambience": "dark",
+      "encounters": {
+        "combat": 0.65,
+        "chest": 0.20,
+        "npc": 0.05,
+        "special": 0.08,
+        "rest": 0.02
+      },
+      "enemies": ["cave_bat", "skeleton_miner", "stone_golem", "bandit_leader"],
+      "npcs": ["ghost_miner"]
+    },
+    
+    "crystal_cave": {
+      "id": "crystal_cave",
+      "name": "Caverna de Cristal",
+      "description": "Cristais brilhantes iluminam as paredes desta caverna mágica. A energia aqui é palpável.",
+      "emoji": "💎",
+      "level": 12,
+      "dangerLevel": 5,
+      "ambience": "mystical",
+      "encounters": {
+        "combat": 0.55,
+        "chest": 0.25,
+        "npc": 0.08,
+        "special": 0.10,
+        "rest": 0.02
+      },
+      "enemies": ["crystal_spider", "ice_elemental", "corrupted_guardian"],
+      "npcs": ["ancient_spirit"]
+    }
+  },
+  
+  "enemies": {
+    "slime": {
+      "id": "slime",
+      "name": "Slime Gelatinoso",
+      "emoji": "🟢",
+      "description": "Uma gosma verde que se move lentamente, mas pode surpreender os descuidados.",
+      "level": 1,
+      "stats": {
+        "hp": 30,
+        "maxHp": 30,
+        "attack": 4,
+        "defense": 1,
+        "speed": 2,
+        "critChance": 0.02
+      },
+      "rewards": {
+        "xp": 10,
+        "goldMin": 3,
+        "goldMax": 8
+      },
+      "lootTable": [
+        { "itemId": "slime_gel", "chance": 0.40 },
+        { "itemId": "health_potion_small", "chance": 0.15 }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["water"]
+    },
+    
+    "rat": {
+      "id": "rat",
+      "name": "Rato Selvagem",
+      "emoji": "🐀",
+      "description": "Um rato grande e agressivo, com dentes afiados e fome insaciável.",
+      "level": 1,
+      "stats": {
+        "hp": 25,
+        "maxHp": 25,
+        "attack": 5,
+        "defense": 2,
+        "speed": 5,
+        "critChance": 0.05
+      },
+      "rewards": {
+        "xp": 8,
+        "goldMin": 2,
+        "goldMax": 6
+      },
+      "lootTable": [
+        { "itemId": "rat_tail", "chance": 0.30 },
+        { "itemId": "raw_meat", "chance": 0.20 }
+      ],
+      "weaknesses": [],
+      "resistances": []
+    },
+    
+    "wild_dog": {
+      "id": "wild_dog",
+      "name": "Cão Selvagem",
+      "emoji": "🐕",
+      "description": "Um cão abandonado que se tornou feroz pela fome e solidão.",
+      "level": 2,
+      "stats": {
+        "hp": 40,
+        "maxHp": 40,
+        "attack": 7,
+        "defense": 3,
+        "speed": 6,
+        "critChance": 0.08
+      },
+      "rewards": {
+        "xp": 15,
+        "goldMin": 5,
+        "goldMax": 12
+      },
+      "lootTable": [
+        { "itemId": "wolf_fang", "chance": 0.25 },
+        { "itemId": "leather_scrap", "chance": 0.35 }
+      ],
+      "weaknesses": [],
+      "resistances": []
+    },
+    
+    "goblin_scout": {
+      "id": "goblin_scout",
+      "name": "Goblin Batedor",
+      "emoji": "👺",
+      "description": "Um goblin pequeno e rápido, sempre em busca de problemas.",
+      "level": 3,
+      "stats": {
+        "hp": 45,
+        "maxHp": 45,
+        "attack": 8,
+        "defense": 3,
+        "speed": 7,
+        "critChance": 0.10
+      },
+      "rewards": {
+        "xp": 20,
+        "goldMin": 8,
+        "goldMax": 18
+      },
+      "lootTable": [
+        { "itemId": "rusty_dagger", "chance": 0.15 },
+        { "itemId": "goblin_ear", "chance": 0.40 },
+        { "itemId": "bronze_coin", "chance": 0.50 }
+      ],
+      "weaknesses": [],
+      "resistances": []
+    },
+    
+    "giant_bee": {
+      "id": "giant_bee",
+      "name": "Abelha Gigante",
+      "emoji": "🐝",
+      "description": "Uma abelha do tamanho de um cachorro, extremamente territorial.",
+      "level": 4,
+      "stats": {
+        "hp": 50,
+        "maxHp": 50,
+        "attack": 10,
+        "defense": 2,
+        "speed": 9,
+        "critChance": 0.07
+      },
+      "rewards": {
+        "xp": 25,
+        "goldMin": 10,
+        "goldMax": 20
+      },
+      "lootTable": [
+        { "itemId": "honey", "chance": 0.60 },
+        { "itemId": "bee_stinger", "chance": 0.35 },
+        { "itemId": "royal_jelly", "chance": 0.08 }
+      ],
+      "weaknesses": ["ice"],
+      "resistances": []
+    },
+    
+    "goblin_warrior": {
+      "id": "goblin_warrior",
+      "name": "Goblin Guerreiro",
+      "emoji": "👹",
+      "description": "Um goblin experiente em combate, armado com espada e escudo enferrujados.",
+      "level": 5,
+      "stats": {
+        "hp": 65,
+        "maxHp": 65,
+        "attack": 12,
+        "defense": 6,
+        "speed": 6,
+        "critChance": 0.10
+      },
+      "rewards": {
+        "xp": 35,
+        "goldMin": 15,
+        "goldMax": 30
+      },
+      "lootTable": [
+        { "itemId": "iron_sword_damaged", "chance": 0.12 },
+        { "itemId": "goblin_armor_piece", "chance": 0.18 },
+        { "itemId": "health_potion", "chance": 0.20 },
+        { "itemId": "silver_coin", "chance": 0.40 }
+      ],
+      "weaknesses": [],
+      "resistances": []
+    },
+    
+    "wolf": {
+      "id": "wolf",
+      "name": "Lobo Cinzento",
+      "emoji": "🐺",
+      "description": "Um predador ágil e inteligente. Seus olhos amarelos brilham na escuridão.",
+      "level": 6,
+      "stats": {
+        "hp": 75,
+        "maxHp": 75,
+        "attack": 14,
+        "defense": 5,
+        "speed": 10,
+        "critChance": 0.15
+      },
+      "rewards": {
+        "xp": 45,
+        "goldMin": 18,
+        "goldMax": 35
+      },
+      "lootTable": [
+        { "itemId": "wolf_pelt", "chance": 0.50 },
+        { "itemId": "sharp_fang", "chance": 0.35 },
+        { "itemId": "wolf_meat", "chance": 0.40 }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["ice"]
+    },
+    
+    "spider": {
+      "id": "spider",
+      "name": "Aranha Venenosa",
+      "emoji": "🕷️",
+      "description": "Uma aranha do tamanho de um escudo, com presas gotejando veneno verde.",
+      "level": 7,
+      "stats": {
+        "hp": 60,
+        "maxHp": 60,
+        "attack": 11,
+        "defense": 4,
+        "speed": 8,
+        "critChance": 0.12
+      },
+      "rewards": {
+        "xp": 50,
+        "goldMin": 20,
+        "goldMax": 40
+      },
+      "lootTable": [
+        { "itemId": "spider_silk", "chance": 0.55 },
+        { "itemId": "venom_sac", "chance": 0.30 },
+        { "itemId": "spider_leg", "chance": 0.35 }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["poison"]
+    },
+    
+    "forest_troll": {
+      "id": "forest_troll",
+      "name": "Troll da Floresta",
+      "emoji": "👹",
+      "description": "Uma criatura enorme e grotesca. Sua pele verde é dura como pedra.",
+      "level": 8,
+      "stats": {
+        "hp": 120,
+        "maxHp": 120,
+        "attack": 18,
+        "defense": 10,
+        "speed": 3,
+        "critChance": 0.05
+      },
+      "rewards": {
+        "xp": 70,
+        "goldMin": 30,
+        "goldMax": 60
+      },
+      "lootTable": [
+        { "itemId": "troll_hide", "chance": 0.40 },
+        { "itemId": "troll_tooth", "chance": 0.30 },
+        { "itemId": "regeneration_stone", "chance": 0.10 },
+        { "itemId": "health_potion_large", "chance": 0.25 }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["physical"]
+    },
+    
+    "cave_bat": {
+      "id": "cave_bat",
+      "name": "Morcego das Cavernas",
+      "emoji": "🦇",
+      "description": "Morcegos cegos que caçam usando ecolocalização. Atacam em enxames.",
+      "level": 7,
+      "stats": {
+        "hp": 55,
+        "maxHp": 55,
+        "attack": 10,
+        "defense": 3,
+        "speed": 12,
+        "critChance": 0.18
+      },
+      "rewards": {
+        "xp": 42,
+        "goldMin": 15,
+        "goldMax": 30
+      },
+      "lootTable": [
+        { "itemId": "bat_wing", "chance": 0.45 },
+        { "itemId": "echo_crystal", "chance": 0.15 }
+      ],
+      "weaknesses": ["light"],
+      "resistances": ["dark"]
+    },
+    
+    "skeleton_miner": {
+      "id": "skeleton_miner",
+      "name": "Esqueleto Minerador",
+      "emoji": "💀",
+      "description": "Os restos de um minerador que morreu nas profundezas. Ainda carrega sua picareta.",
+      "level": 9,
+      "stats": {
+        "hp": 85,
+        "maxHp": 85,
+        "attack": 16,
+        "defense": 8,
+        "speed": 5,
+        "critChance": 0.10
+      },
+      "rewards": {
+        "xp": 60,
+        "goldMin": 25,
+        "goldMax": 50
+      },
+      "lootTable": [
+        { "itemId": "old_pickaxe", "chance": 0.20 },
+        { "itemId": "bone_dust", "chance": 0.50 },
+        { "itemId": "cursed_gem", "chance": 0.08 },
+        { "itemId": "iron_ore", "chance": 0.35 }
+      ],
+      "weaknesses": ["holy"],
+      "resistances": ["poison", "dark"]
+    },
+    
+    "stone_golem": {
+      "id": "stone_golem",
+      "name": "Golem de Pedra",
+      "emoji": "🗿",
+      "description": "Uma construção antiga reanimada por magia. Lento mas devastador.",
+      "level": 10,
+      "stats": {
+        "hp": 150,
+        "maxHp": 150,
+        "attack": 20,
+        "defense": 15,
+        "speed": 2,
+        "critChance": 0.02
+      },
+      "rewards": {
+        "xp": 85,
+        "goldMin": 40,
+        "goldMax": 80
+      },
+      "lootTable": [
+        { "itemId": "stone_core", "chance": 0.35 },
+        { "itemId": "magic_crystal", "chance": 0.20 },
+        { "itemId": "golem_fragment", "chance": 0.45 }
+      ],
+      "weaknesses": ["magic"],
+      "resistances": ["physical", "fire"]
+    },
+    
+    "bandit_leader": {
+      "id": "bandit_leader",
+      "name": "Líder dos Bandidos",
+      "emoji": "🏴‍☠️",
+      "description": "O chefe dos bandidos locais. Experiente e perigoso.",
+      "level": 11,
+      "stats": {
+        "hp": 110,
+        "maxHp": 110,
+        "attack": 22,
+        "defense": 10,
+        "speed": 9,
+        "critChance": 0.20
+      },
+      "rewards": {
+        "xp": 95,
+        "goldMin": 60,
+        "goldMax": 120
+      },
+      "lootTable": [
+        { "itemId": "bandit_blade", "chance": 0.25 },
+        { "itemId": "leather_armor", "chance": 0.20 },
+        { "itemId": "gold_pouch", "chance": 0.50 },
+        { "itemId": "rare_ring", "chance": 0.12 }
+      ],
+      "weaknesses": [],
+      "resistances": []
+    },
+    
+    "crystal_spider": {
+      "id": "crystal_spider",
+      "name": "Aranha de Cristal",
+      "emoji": "💎",
+      "description": "Uma aranha cujo corpo é feito de cristais mágicos brilhantes.",
+      "level": 12,
+      "stats": {
+        "hp": 95,
+        "maxHp": 95,
+        "attack": 18,
+        "defense": 12,
+        "speed": 8,
+        "critChance": 0.15
+      },
+      "rewards": {
+        "xp": 100,
+        "goldMin": 50,
+        "goldMax": 100
+      },
+      "lootTable": [
+        { "itemId": "crystal_shard", "chance": 0.60 },
+        { "itemId": "prismatic_silk", "chance": 0.35 },
+        { "itemId": "mana_crystal", "chance": 0.20 }
+      ],
+      "weaknesses": ["physical"],
+      "resistances": ["magic"]
+    },
+    
+    "ice_elemental": {
+      "id": "ice_elemental",
+      "name": "Elemental de Gelo",
+      "emoji": "❄️",
+      "description": "Uma criatura feita de gelo puro, nascida da magia ancestral.",
+      "level": 13,
+      "stats": {
+        "hp": 105,
+        "maxHp": 105,
+        "attack": 20,
+        "defense": 8,
+        "speed": 7,
+        "critChance": 0.12
+      },
+      "rewards": {
+        "xp": 110,
+        "goldMin": 55,
+        "goldMax": 110
+      },
+      "lootTable": [
+        { "itemId": "ice_core", "chance": 0.40 },
+        { "itemId": "frozen_tear", "chance": 0.30 },
+        { "itemId": "frost_essence", "chance": 0.25 }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["ice", "water"]
+    },
+    
+    "corrupted_guardian": {
+      "id": "corrupted_guardian",
+      "name": "Guardião Corrompido",
+      "emoji": "⚔️",
+      "description": "Um antigo guardião da caverna, agora corrompido por magia negra. BOSS DO MUNDO 1.",
+      "level": 15,
+      "isBoss": true,
+      "stats": {
+        "hp": 250,
+        "maxHp": 250,
+        "attack": 28,
+        "defense": 16,
+        "speed": 7,
+        "critChance": 0.18
+      },
+      "rewards": {
+        "xp": 200,
+        "goldMin": 150,
+        "goldMax": 300
+      },
+      "lootTable": [
+        { "itemId": "corrupted_essence", "chance": 1.0 },
+        { "itemId": "guardian_sword", "chance": 0.35 },
+        { "itemId": "ancient_armor", "chance": 0.30 },
+        { "itemId": "epic_gem", "chance": 0.25 },
+        { "itemId": "legendary_ring", "chance": 0.08 }
+      ],
+      "weaknesses": ["holy"],
+      "resistances": ["dark", "poison"]
+    }
+  },
+  
+  "items": {
+    "slime_gel": {
+      "id": "slime_gel",
+      "name": "Gel de Slime",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🟢",
+      "description": "Gosma viscosa de um slime. Usado em alquimia.",
+      "sellPrice": 5,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "health_potion_small": {
+      "id": "health_potion_small",
+      "name": "Poção de Vida Pequena",
+      "type": "consumable",
+      "rarity": "common",
+      "emoji": "🧪",
+      "description": "Restaura 30 HP.",
+      "effect": {
+        "type": "heal",
+        "value": 30
+      },
+      "sellPrice": 15,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "health_potion": {
+      "id": "health_potion",
+      "name": "Poção de Vida",
+      "type": "consumable",
+      "rarity": "common",
+      "emoji": "🧪",
+      "description": "Restaura 50 HP.",
+      "effect": {
+        "type": "heal",
+        "value": 50
+      },
+      "sellPrice": 25,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "health_potion_large": {
+      "id": "health_potion_large",
+      "name": "Poção de Vida Grande",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "emoji": "🧪",
+      "description": "Restaura 100 HP.",
+      "effect": {
+        "type": "heal",
+        "value": 100
+      },
+      "sellPrice": 50,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "rat_tail": {
+      "id": "rat_tail",
+      "name": "Cauda de Rato",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🐀",
+      "description": "Cauda de um rato selvagem. Sem uso aparente.",
+      "sellPrice": 3,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "raw_meat": {
+      "id": "raw_meat",
+      "name": "Carne Crua",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🥩",
+      "description": "Carne fresca. Pode ser cozinhada ou vendida.",
+      "sellPrice": 8,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "wolf_fang": {
+      "id": "wolf_fang",
+      "name": "Presa de Lobo",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🦷",
+      "description": "Presa afiada de um lobo. Usada em artesanato.",
+      "sellPrice": 12,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "leather_scrap": {
+      "id": "leather_scrap",
+      "name": "Retalho de Couro",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🧵",
+      "description": "Pedaço de couro. Útil para reparos.",
+      "sellPrice": 10,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "rusty_dagger": {
+      "id": "rusty_dagger",
+      "name": "Adaga Enferrujada",
+      "type": "weapon",
+      "rarity": "common",
+      "emoji": "🗡️",
+      "description": "Uma adaga velha e enferrujada. Melhor que nada.",
+      "level": 3,
+      "stats": {
+        "physicalDamage": 6
+      },
+      "sellPrice": 20,
+      "stackable": false
+    },
+    
+    "goblin_ear": {
+      "id": "goblin_ear",
+      "name": "Orelha de Goblin",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "👂",
+      "description": "Orelha pontuda de goblin. Prova de caçada.",
+      "sellPrice": 8,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "bronze_coin": {
+      "id": "bronze_coin",
+      "name": "Moeda de Bronze",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🪙",
+      "description": "Moeda antiga. Pode valer algo.",
+      "sellPrice": 15,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "honey": {
+      "id": "honey",
+      "name": "Mel Puro",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "emoji": "🍯",
+      "description": "Mel doce e nutritivo. Restaura 40 HP lentamente.",
+      "effect": {
+        "type": "heal_overtime",
+        "value": 10,
+        "duration": 4
+      },
+      "sellPrice": 30,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "bee_stinger": {
+      "id": "bee_stinger",
+      "name": "Ferrão de Abelha",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🐝",
+      "description": "Ferrão afiado. Usado para fazer flechas venenosas.",
+      "sellPrice": 18,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "royal_jelly": {
+      "id": "royal_jelly",
+      "name": "Geleia Real",
+      "type": "consumable",
+      "rarity": "rare",
+      "emoji": "✨",
+      "description": "Geleia mágica. Restaura 100 HP e aumenta defesa temporariamente.",
+      "effect": {
+        "type": "heal_and_buff",
+        "heal": 100,
+        "buff": { "defense": 1.2 },
+        "duration": 5
+      },
+      "sellPrice": 80,
+      "stackable": true,
+      "maxStack": 10
+    },
+    
+    "iron_sword_damaged": {
+      "id": "iron_sword_damaged",
+      "name": "Espada de Ferro Danificada",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "emoji": "⚔️",
+      "description": "Espada de ferro em más condições, mas ainda utilizável.",
+      "level": 5,
+      "stats": {
+        "physicalDamage": 12
+      },
+      "sellPrice": 50,
+      "stackable": false
+    },
+    
+    "goblin_armor_piece": {
+      "id": "goblin_armor_piece",
+      "name": "Peça de Armadura Goblin",
+      "type": "armor",
+      "rarity": "common",
+      "emoji": "🛡️",
+      "description": "Pedaço de armadura de couro improvisada.",
+      "level": 5,
+      "stats": {
+        "defense": 4
+      },
+      "sellPrice": 40,
+      "stackable": false
+    },
+    
+    "silver_coin": {
+      "id": "silver_coin",
+      "name": "Moeda de Prata",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🪙",
+      "description": "Moeda valiosa de prata.",
+      "sellPrice": 50,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "wolf_pelt": {
+      "id": "wolf_pelt",
+      "name": "Pele de Lobo",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🐺",
+      "description": "Pele macia de lobo. Valiosa para artesãos.",
+      "sellPrice": 35,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "sharp_fang": {
+      "id": "sharp_fang",
+      "name": "Presa Afiada",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🦷",
+      "description": "Presa extremamente afiada. Pode ser transformada em arma.",
+      "sellPrice": 25,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "wolf_meat": {
+      "id": "wolf_meat",
+      "name": "Carne de Lobo",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🥩",
+      "description": "Carne de qualidade superior.",
+      "sellPrice": 15,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "spider_silk": {
+      "id": "spider_silk",
+      "name": "Seda de Aranha",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🕸️",
+      "description": "Seda resistente de aranha. Usada para fazer armaduras leves.",
+      "sellPrice": 40,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "venom_sac": {
+      "id": "venom_sac",
+      "name": "Saco de Veneno",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "☠️",
+      "description": "Glândula venenosa de aranha. Cuidado ao manusear!",
+      "sellPrice": 45,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "spider_leg": {
+      "id": "spider_leg",
+      "name": "Pata de Aranha",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🕷️",
+      "description": "Pata de aranha gigante. Usada em poções.",
+      "sellPrice": 20,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "troll_hide": {
+      "id": "troll_hide",
+      "name": "Couro de Troll",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "🛡️",
+      "description": "Couro extremamente resistente. Perfeito para armaduras pesadas.",
+      "sellPrice": 80,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "troll_tooth": {
+      "id": "troll_tooth",
+      "name": "Dente de Troll",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🦷",
+      "description": "Dente grande e irregular. Muito valioso.",
+      "sellPrice": 55,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "regeneration_stone": {
+      "id": "regeneration_stone",
+      "name": "Pedra de Regeneração",
+      "type": "consumable",
+      "rarity": "rare",
+      "emoji": "💚",
+      "description": "Pedra mágica que regenera 20 HP por turno durante 5 turnos.",
+      "effect": {
+        "type": "heal_overtime",
+        "value": 20,
+        "duration": 5
+      },
+      "sellPrice": 120,
+      "stackable": true,
+      "maxStack": 10
+    },
+    
+    "bat_wing": {
+      "id": "bat_wing",
+      "name": "Asa de Morcego",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "🦇",
+      "description": "Asa membranosa de morcego. Leve mas resistente.",
+      "sellPrice": 18,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "echo_crystal": {
+      "id": "echo_crystal",
+      "name": "Cristal de Eco",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💎",
+      "description": "Cristal que ressoa com som. Muito valioso para magos.",
+      "sellPrice": 90,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "old_pickaxe": {
+      "id": "old_pickaxe",
+      "name": "Picareta Velha",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "emoji": "⛏️",
+      "description": "Picareta de minerador. Surpreendentemente eficaz em combate.",
+      "level": 9,
+      "stats": {
+        "physicalDamage": 15,
+        "critBonus": 0.05
+      },
+      "sellPrice": 60,
+      "stackable": false
+    },
+    
+    "bone_dust": {
+      "id": "bone_dust",
+      "name": "Pó de Osso",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "💀",
+      "description": "Pó fino de ossos. Usado em rituais sombrios.",
+      "sellPrice": 25,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "cursed_gem": {
+      "id": "cursed_gem",
+      "name": "Gema Amaldiçoada",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💎",
+      "description": "Gema que pulsa com energia negra. Extremamente valiosa mas perigosa.",
+      "sellPrice": 150,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "iron_ore": {
+      "id": "iron_ore",
+      "name": "Minério de Ferro",
+      "type": "material",
+      "rarity": "common",
+      "emoji": "⛏️",
+      "description": "Minério bruto de ferro. Pode ser fundido.",
+      "sellPrice": 30,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "stone_core": {
+      "id": "stone_core",
+      "name": "Núcleo de Pedra",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "🗿",
+      "description": "Núcleo mágico de um golem. Irradia poder arcano.",
+      "sellPrice": 100,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "magic_crystal": {
+      "id": "magic_crystal",
+      "name": "Cristal Mágico",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💎",
+      "description": "Cristal puro imbuído com magia. Essencial para encantamentos.",
+      "sellPrice": 110,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "golem_fragment": {
+      "id": "golem_fragment",
+      "name": "Fragmento de Golem",
+      "type": "material",
+      "rarity": "uncommon",
+      "emoji": "🗿",
+      "description": "Pedaço de um golem destruído.",
+      "sellPrice": 45,
+      "stackable": true,
+      "maxStack": 99
+    },
+    
+    "bandit_blade": {
+      "id": "bandit_blade",
+      "name": "Lâmina do Bandido",
+      "type": "weapon",
+      "rarity": "rare",
+      "emoji": "🗡️",
+      "description": "Espada curva e bem equilibrada. Usada por bandidos experientes.",
+      "level": 11,
+      "stats": {
+        "physicalDamage": 20,
+        "critBonus": 0.08
+      },
+      "sellPrice": 150,
+      "stackable": false
+    },
+    
+    "leather_armor": {
+      "id": "leather_armor",
+      "name": "Armadura de Couro",
+      "type": "armor",
+      "rarity": "uncommon",
+      "emoji": "🦺",
+      "description": "Armadura de couro curtido. Leve e flexível.",
+      "level": 10,
+      "stats": {
+        "defense": 8,
+        "agilityBonus": 1
+      },
+      "sellPrice": 120,
+      "stackable": false
+    },
+    
+    "gold_pouch": {
+      "id": "gold_pouch",
+      "name": "Bolsa de Ouro",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💰",
+      "description": "Bolsa cheia de moedas de ouro. Vale muito!",
+      "sellPrice": 200,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "rare_ring": {
+      "id": "rare_ring",
+      "name": "Anel Raro",
+      "type": "accessory",
+      "rarity": "rare",
+      "emoji": "💍",
+      "description": "Anel ornamentado com gema pequena. Aumenta sorte.",
+      "level": 10,
+      "stats": {
+        "luckBonus": 2
+      },
+      "sellPrice": 180,
+      "stackable": false
+    },
+    
+    "crystal_shard": {
+      "id": "crystal_shard",
+      "name": "Fragmento de Cristal",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💎",
+      "description": "Fragmento de cristal mágico puro. Brilha com luz própria.",
+      "sellPrice": 120,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "prismatic_silk": {
+      "id": "prismatic_silk",
+      "name": "Seda Prismática",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "🌈",
+      "description": "Seda que refrata a luz em cores múltiplas. Extremamente rara.",
+      "sellPrice": 140,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "name": "Cristal de Mana",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "🔮",
+      "description": "Cristal saturado de energia mágica pura.",
+      "sellPrice": 150,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "ice_core": {
+      "id": "ice_core",
+      "name": "Núcleo de Gelo",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "❄️",
+      "description": "Núcleo gelado de um elemental. Nunca derrete.",
+      "sellPrice": 130,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "frozen_tear": {
+      "id": "frozen_tear",
+      "name": "Lágrima Congelada",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "💧",
+      "description": "Lágrima de um elemental, cristalizada para sempre.",
+      "sellPrice": 110,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "frost_essence": {
+      "id": "frost_essence",
+      "name": "Essência Gélida",
+      "type": "material",
+      "rarity": "rare",
+      "emoji": "❄️",
+      "description": "Essência pura do frio eterno. Valiosa para encantamentos.",
+      "sellPrice": 125,
+      "stackable": true,
+      "maxStack": 50
+    },
+    
+    "corrupted_essence": {
+      "id": "corrupted_essence",
+      "name": "Essência Corrompida",
+      "type": "material",
+      "rarity": "epic",
+      "emoji": "💀",
+      "description": "Essência sombria do Guardião Corrompido. Pulsa com poder maligno.",
+      "sellPrice": 250,
+      "stackable": true,
+      "maxStack": 20
+    },
+    
+    "guardian_sword": {
+      "id": "guardian_sword",
+      "name": "Espada do Guardião",
+      "type": "weapon",
+      "rarity": "epic",
+      "emoji": "⚔️",
+      "description": "Espada lendária empunhada pelo guardião. Ainda mantém poder residual.",
+      "level": 15,
+      "stats": {
+        "physicalDamage": 30,
+        "magicDamage": 5,
+        "critBonus": 0.10
+      },
+      "sellPrice": 500,
+      "stackable": false
+    },
+    
+    "ancient_armor": {
+      "id": "ancient_armor",
+      "name": "Armadura Ancestral",
+      "type": "armor",
+      "rarity": "epic",
+      "emoji": "🛡️",
+      "description": "Armadura pesada forjada em tempos antigos. Quase indestrutível.",
+      "level": 15,
+      "stats": {
+        "defense": 18,
+        "vitalityBonus": 3
+      },
+      "sellPrice": 450,
+      "stackable": false
+    },
+    
+    "epic_gem": {
+      "id": "epic_gem",
+      "name": "Gema Épica",
+      "type": "material",
+      "rarity": "epic",
+      "emoji": "💎",
+      "description": "Gema de qualidade excepcional. Irradia poder.",
+      "sellPrice": 300,
+      "stackable": true,
+      "maxStack": 20
+    },
+
+    "holy_hammer": {
+      "id": "holy_hammer",
+      "name": "Martelo Sagrado",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "emoji": "🔨",
+      "description": "Um martelo abençoado pelos deuses.",
+      "level": 5,
+      "stats": {
+        "physicalDamage": 7,
+        "magicDamage": 3
+      },
+      "sellPrice": 110,
+      "stackable": false
+    },
+
+    "shining_armor": {
+      "id": "shining_armor",
+      "name": "Armadura Reluzente",
+      "type": "armor",
+      "rarity": "uncommon",
+      "emoji": "🛡️",
+      "description": "Armadura que brilha com luz divina.",
+      "level": 6,
+      "stats": {
+        "defense": 6,
+        "holyResistance": 10
+      },
+      "sellPrice": 130,
+      "stackable": false
+    },
+
+    "holy_water": {
+      "id": "holy_water",
+      "name": "Água Benta",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "emoji": "✨",
+      "description": "Cura e remove efeitos negativos.",
+      "effect": {
+        "type": "heal",
+        "value": 50,
+        "removeDebuff": true
+      },
+      "sellPrice": 60,
+      "stackable": true,
+      "maxStack": 20
+    },
+
+    "legendary_ring": {
+      "id": "legendary_ring",
+      "name": "Anel Lendário",
+      "type": "accessory",
+      "rarity": "legendary",
+      "emoji": "💍",
+      "description": "Anel antigo com runas brilhantes. Aumenta todos os atributos.",
+      "level": 15,
+      "stats": {
+        "strengthBonus": 2,
+        "intelligenceBonus": 2,
+        "agilityBonus": 2,
+        "vitalityBonus": 2,
+        "luckBonus": 3,
+        "charismaBonus": 2
+      },
+      "sellPrice": 800,
+      "stackable": false
+    }
+  },
+  
+  "chests": {
+    "wooden_chest": {
+      "id": "wooden_chest",
+      "name": "Baú de Madeira",
+      "emoji": "📦",
+      "description": "Um baú simples de madeira. Pode conter surpresas.",
+      "rarity": "common",
+      "lootTable": [
+        { "itemId": "health_potion_small", "chance": 0.40 },
+        { "itemId": "bronze_coin", "chance": 0.50 },
+        { "itemId": "leather_scrap", "chance": 0.30 },
+        { "gold": { "min": 10, "max": 30 }, "chance": 0.70 }
+      ],
+      "trapChance": 0.10,
+      "trapDamage": 15
+    },
+    
+    "iron_chest": {
+      "id": "iron_chest",
+      "name": "Baú de Ferro",
+      "emoji": "🗃️",
+      "description": "Um baú reforçado com ferro. Parece valioso.",
+      "rarity": "uncommon",
+      "lootTable": [
+        { "itemId": "health_potion", "chance": 0.50 },
+        { "itemId": "silver_coin", "chance": 0.40 },
+        { "itemId": "iron_ore", "chance": 0.35 },
+        { "itemId": "rusty_dagger", "chance": 0.15 },
+        { "gold": { "min": 30, "max": 80 }, "chance": 0.80 }
+      ],
+      "trapChance": 0.15,
+      "trapDamage": 25
+    },
+    
+    "ancient_chest": {
+      "id": "ancient_chest",
+      "name": "Baú Ancestral",
+      "emoji": "⚱️",
+      "description": "Um baú muito antigo coberto de runas. Irradia magia.",
+      "rarity": "rare",
+      "lootTable": [
+        { "itemId": "health_potion_large", "chance": 0.50 },
+        { "itemId": "magic_crystal", "chance": 0.30 },
+        { "itemId": "rare_ring", "chance": 0.15 },
+        { "itemId": "bandit_blade", "chance": 0.12 },
+        { "gold": { "min": 80, "max": 150 }, "chance": 0.85 }
+      ],
+      "trapChance": 0.20,
+      "trapDamage": 40
+    },
+    
+    "crystal_chest": {
+      "id": "crystal_chest",
+      "name": "Baú de Cristal",
+      "emoji": "💎",
+      "description": "Baú feito inteiramente de cristal brilhante. Extremamente raro.",
+      "rarity": "epic",
+      "lootTable": [
+        { "itemId": "crystal_shard", "chance": 0.60 },
+        { "itemId": "mana_crystal", "chance": 0.40 },
+        { "itemId": "epic_gem", "chance": 0.20 },
+        { "itemId": "guardian_sword", "chance": 0.08 },
+        { "gold": { "min": 150, "max": 300 }, "chance": 0.90 }
+      ],
+      "trapChance": 0.25,
+      "trapDamage": 60
+    }
+  },
+  
+  "npcs": {
+    "old_merchant": {
+      "id": "old_merchant",
+      "name": "Mercador Idoso",
+      "emoji": "👴",
+      "description": "Um velho mercador que vende e compra itens.",
+      "dialogue": "Bem-vindo, aventureiro! Tenho os melhores preços da vila!",
+      "type": "merchant",
+      "buyPriceMultiplier": 0.5,
+      "sellPriceMultiplier": 1.2
+    },
+    
+    "village_elder": {
+      "id": "village_elder",
+      "name": "Ancião da Vila",
+      "emoji": "🧓",
+      "description": "O sábio ancião da vila. Conhece muitas histórias.",
+      "dialogue": "Ah, jovem aventureiro. Deixe-me contar sobre os velhos tempos...",
+      "type": "quest_giver",
+      "questPool": ["collect_slime_gel", "defeat_goblins", "explore_forest"]
+    },
+    
+    "blacksmith_apprentice": {
+      "id": "blacksmith_apprentice",
+      "name": "Aprendiz de Ferreiro",
+      "emoji": "🔨",
+      "description": "Um jovem aprendiz que sonha em se tornar um mestre ferreiro.",
+      "dialogue": "Um dia serei o melhor ferreiro de Eldoria!",
+      "type": "crafter",
+      "canCraft": ["weapons", "armor"]
+    },
+    
+    "wandering_bard": {
+      "id": "wandering_bard",
+      "name": "Bardo Errante",
+      "emoji": "🎵",
+      "description": "Um bardo que viaja cantando histórias de heróis.",
+      "dialogue": "Permita-me cantar sobre suas façanhas, bravo aventureiro!",
+      "type": "lore",
+      "buffService": {
+        "name": "Canção de Coragem",
+        "cost": 50,
+        "effect": { "attack": 1.1 },
+        "duration": 10
+      }
+    },
+    
+    "herbalist": {
+      "id": "herbalist",
+      "name": "Herbalista",
+      "emoji": "🌿",
+      "description": "Uma especialista em ervas e poções curativas.",
+      "dialogue": "As ervas certas podem salvar sua vida!",
+      "type": "merchant",
+      "specializes": ["consumables"],
+      "buyPriceMultiplier": 0.6,
+      "sellPriceMultiplier": 1.1
+    },
+    
+    "lost_traveler": {
+      "id": "lost_traveler",
+      "name": "Viajante Perdido",
+      "emoji": "🧳",
+      "description": "Um viajante que se perdeu na floresta.",
+      "dialogue": "Você pode me ajudar a encontrar o caminho de volta?",
+      "type": "quest_giver",
+      "questPool": ["escort_mission"]
+    },
+    
+    "mysterious_witch": {
+      "id": "mysterious_witch",
+      "name": "Bruxa Misteriosa",
+      "emoji": "🧙‍♀️",
+      "description": "Uma bruxa solitária que vive na floresta.",
+      "dialogue": "Hmm... você tem potencial. Talvez eu possa lhe ensinar algo...",
+      "type": "trainer",
+      "canTeach": ["magic_basics"],
+      "requiresLevel": 8
+    },
+    
+    "ghost_miner": {
+      "id": "ghost_miner",
+      "name": "Fantasma do Minerador",
+      "emoji": "👻",
+      "description": "O espírito de um minerador que morreu na mina.",
+      "dialogue": "Minha picareta... preciso encontrar minha picareta...",
+      "type": "quest_giver",
+      "questPool": ["find_old_pickaxe"],
+      "isGhost": true
+    },
+    
+    "ancient_spirit": {
+      "id": "ancient_spirit",
+      "name": "Espírito Ancestral",
+      "emoji": "✨",
+      "description": "Um espírito antigo que guarda a caverna de cristal.",
+      "dialogue": "Poucos chegam tão longe. Você é digno de meu conhecimento.",
+      "type": "trainer",
+      "canTeach": ["advanced_magic"],
+      "requiresLevel": 12,
+      "requiresItem": "mana_crystal"
+    }
+  },
+  
+  "quests": {
+    "collect_slime_gel": {
+      "id": "collect_slime_gel",
+      "name": "Gosma Necessária",
+      "description": "O herbalista precisa de gel de slime para suas poções.",
+      "type": "collect",
+      "objectives": [
+        {
+          "type": "collect_item",
+          "itemId": "slime_gel",
+          "quantity": 10
+        }
+      ],
+      "rewards": {
+        "xp": 50,
+        "gold": 100,
+        "items": [
+          { "itemId": "health_potion", "quantity": 3 }
+        ]
+      },
+      "level": 1,
+      "repeatable": true
+    },
+    
+    "defeat_goblins": {
+      "id": "defeat_goblins",
+      "name": "Problema Goblin",
+      "description": "Goblins estão atacando caravanas. Derrote 5 deles.",
+      "type": "kill",
+      "objectives": [
+        {
+          "type": "kill_enemy",
+          "enemyId": "goblin_scout",
+          "quantity": 5
+        }
+      ],
+      "rewards": {
+        "xp": 100,
+        "gold": 150,
+        "items": [
+          { "itemId": "silver_coin", "quantity": 2 }
+        ]
+      },
+      "level": 3,
+      "repeatable": true
+    },
+    
+    "explore_forest": {
+      "id": "explore_forest",
+      "name": "Explorador da Floresta",
+      "description": "Explore a Floresta Sombria e retorne com informações.",
+      "type": "explore",
+      "objectives": [
+        {
+          "type": "visit_location",
+          "locationId": "dark_forest",
+          "times": 5
+        }
+      ],
+      "rewards": {
+        "xp": 80,
+        "gold": 120
+      },
+      "level": 5,
+      "repeatable": false
+    },
+    
+    "escort_mission": {
+      "id": "escort_mission",
+      "name": "Escolta Segura",
+      "description": "Escorte o viajante perdido de volta à vila.",
+      "type": "escort",
+      "objectives": [
+        {
+          "type": "complete_adventures",
+          "quantity": 3,
+          "withNPC": "lost_traveler"
+        }
+      ],
+      "rewards": {
+        "xp": 150,
+        "gold": 200,
+        "items": [
+          { "itemId": "rare_ring", "quantity": 1 }
+        ]
+      },
+      "level": 6,
+      "repeatable": false
+    },
+    
+    "find_old_pickaxe": {
+      "id": "find_old_pickaxe",
+      "name": "Picareta Perdida",
+      "description": "Encontre a picareta do fantasma do minerador.",
+      "type": "collect",
+      "objectives": [
+        {
+          "type": "collect_item",
+          "itemId": "old_pickaxe",
+          "quantity": 1
+        }
+      ],
+      "rewards": {
+        "xp": 200,
+        "gold": 250,
+        "items": [
+          { "itemId": "cursed_gem", "quantity": 1 }
+        ]
+      },
+      "level": 9,
+      "repeatable": false
+    }
+  },
+  
+  "achievements": {
+    "first_blood": {
+      "id": "first_blood",
+      "name": "Primeira Vitória",
+      "description": "Derrote seu primeiro inimigo",
+      "emoji": "⚔️",
+      "requirement": {
+        "type": "kill_count",
+        "value": 1
+      },
+      "reward": {
+        "title": "Novato",
+        "xp": 50
+      }
+    },
+    
+    "slime_hunter": {
+      "id": "slime_hunter",
+      "name": "Caçador de Slimes",
+      "description": "Derrote 50 slimes",
+      "emoji": "🟢",
+      "requirement": {
+        "type": "kill_specific",
+        "enemyId": "slime",
+        "value": 50
+      },
+      "reward": {
+        "title": "Exterminador de Gosma",
+        "item": "slime_gel",
+        "quantity": 20
+      }
+    },
+    
+    "treasure_finder": {
+      "id": "treasure_finder",
+      "name": "Caçador de Tesouros",
+      "description": "Abra 25 baús",
+      "emoji": "💎",
+      "requirement": {
+        "type": "chests_opened",
+        "value": 25
+      },
+      "reward": {
+        "title": "Caçador de Tesouros",
+        "gold": 500
+      }
+    },
+    
+    "boss_slayer": {
+      "id": "boss_slayer",
+      "name": "Matador de Chefes",
+      "description": "Derrote o Guardião Corrompido",
+      "emoji": "👑",
+      "requirement": {
+        "type": "kill_boss",
+        "bossId": "corrupted_guardian"
+      },
+      "reward": {
+        "title": "Campeão de Eldoria",
+        "item": "legendary_ring",
+        "quantity": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "warrior": {
+    "id": "warrior",
+    "name": "Guerreiro",
+    "emoji": "⚔️",
+    "description": "Mestre do combate corpo a corpo. Alto HP e defesa.",
+    "baseStats": {
+      "strength": 8,
+      "intelligence": 2,
+      "agility": 4,
+      "vitality": 8,
+      "luck": 3,
+      "charisma": 3
+    },
+    "passive": {
+      "name": "Pele de Ferro",
+      "description": "+10% defesa em combate"
+    },
+    "startingGear": {
+      "weapon": {
+        "id": "starter_sword",
+        "name": "Espada Larga",
+        "type": "weapon",
+        "rarity": "common",
+        "physicalDamage": 8,
+        "description": "Uma espada pesada e resistente."
+      },
+      "armor": {
+        "id": "leather_armor",
+        "name": "Armadura de Couro",
+        "type": "armor",
+        "rarity": "common",
+        "defense": 5,
+        "description": "Proteção básica mas eficaz."
+      },
+      "consumable": {
+        "id": "health_potion",
+        "name": "Poção de Vida",
+        "type": "consumable",
+        "heal": 30,
+        "quantity": 3,
+        "description": "Restaura 30 HP."
+      }
+    },
+    "tips": [
+      "Ideal para iniciantes",
+      "Ótimo para combate prolongado",
+      "Distribua pontos em Força e Vitalidade"
+    ]
+  },
+  "mage": {
+    "id": "mage",
+    "name": "Mago",
+    "emoji": "🔮",
+    "description": "Mestre da magia arcana. Alto dano mágico, baixa defesa.",
+    "baseStats": {
+      "strength": 2,
+      "intelligence": 10,
+      "agility": 3,
+      "vitality": 5,
+      "luck": 4,
+      "charisma": 4
+    },
+    "passive": {
+      "name": "Mente Brilhante",
+      "description": "+15% dano mágico"
+    },
+    "startingGear": {
+      "weapon": {
+        "id": "apprentice_staff",
+        "name": "Cajado Aprendiz",
+        "type": "weapon",
+        "rarity": "common",
+        "magicDamage": 10,
+        "description": "Um cajado imbuído com energia arcana."
+      },
+      "armor": {
+        "id": "mystic_robe",
+        "name": "Manto Místico",
+        "type": "armor",
+        "rarity": "common",
+        "defense": 2,
+        "magicDefense": 5,
+        "description": "Proteção contra magia."
+      },
+      "consumable": {
+        "id": "mana_potion",
+        "name": "Poção de Mana",
+        "type": "consumable",
+        "restoreMana": 30,
+        "quantity": 5,
+        "description": "Restaura energia mágica."
+      }
+    },
+    "tips": [
+      "Alto risco, alta recompensa",
+      "Mantenha distância dos inimigos",
+      "Foque em Inteligência e Sorte"
+    ]
+  },
+  "archer": {
+    "id": "archer",
+    "name": "Arqueiro",
+    "emoji": "🏹",
+    "description": "Especialista em ataques à distância. Alta precisão.",
+    "baseStats": {
+      "strength": 4,
+      "intelligence": 3,
+      "agility": 9,
+      "vitality": 6,
+      "luck": 5,
+      "charisma": 3
+    },
+    "passive": {
+      "name": "Olho de Águia",
+      "description": "+20% chance de crítico"
+    },
+    "startingGear": {
+      "weapon": {
+        "id": "short_bow",
+        "name": "Arco Curto",
+        "type": "weapon",
+        "rarity": "common",
+        "physicalDamage": 7,
+        "critBonus": 5,
+        "description": "Um arco leve e preciso."
+      },
+      "armor": {
+        "id": "leather_vest",
+        "name": "Gibão de Couro",
+        "type": "armor",
+        "rarity": "common",
+        "defense": 3,
+        "agilityBonus": 2,
+        "description": "Armadura leve que não atrapalha movimentos."
+      },
+      "consumable": {
+        "id": "special_arrows",
+        "name": "Flechas Especiais",
+        "type": "consumable",
+        "damageBonus": 10,
+        "quantity": 10,
+        "description": "Flechas perfurantes especiais."
+      }
+    },
+    "tips": [
+      "Mestre dos críticos",
+      "Equilibrado entre ataque e defesa",
+      "Invista em Agilidade e Sorte"
+    ]
+  },
+  "rogue": {
+    "id": "rogue",
+    "name": "Ladino",
+    "emoji": "🗡️",
+    "description": "Mestre da furtividade e sorte. Alto dano crítico.",
+    "baseStats": {
+      "strength": 5,
+      "intelligence": 4,
+      "agility": 8,
+      "vitality": 5,
+      "luck": 8,
+      "charisma": 2
+    },
+    "passive": {
+      "name": "Mãos Leves",
+      "description": "+30% chance de drop raro"
+    },
+    "startingGear": {
+      "weapon": {
+        "id": "twin_daggers",
+        "name": "Adagas Gêmeas",
+        "type": "weapon",
+        "rarity": "uncommon",
+        "physicalDamage": 6,
+        "critDamage": 50,
+        "description": "Duas adagas afiadas como navalhas."
+      },
+      "armor": {
+        "id": "shadow_cloak",
+        "name": "Capa Sombria",
+        "type": "armor",
+        "rarity": "common",
+        "defense": 2,
+        "evasion": 10,
+        "description": "Uma capa que te ajuda a se esconder."
+      },
+      "consumable": {
+        "id": "invisibility_potion",
+        "name": "Poção de Invisibilidade",
+        "type": "consumable",
+        "effect": "flee_guaranteed",
+        "quantity": 2,
+        "description": "Permite fuga garantida do combate."
+      }
+    },
+    "tips": [
+      "Mestre do farm de itens",
+      "Alto dano em picos",
+      "Foque em Sorte e Agilidade"
+    ]
+  },
+  "paladin": {
+    "id": "paladin",
+    "name": "Paladino",
+    "emoji": "✨",
+    "description": "Guerreiro sagrado. Equilibrado entre ataque e cura.",
+    "baseStats": {
+      "strength": 6,
+      "intelligence": 5,
+      "agility": 4,
+      "vitality": 7,
+      "luck": 3,
+      "charisma": 5
+    },
+    "passive": {
+      "name": "Benção Divina",
+      "description": "Regenera 5% do HP apenas no primeiro ataque do combate"
+    },
+    "startingGear": {
+      "weapon": {
+        "id": "holy_hammer",
+        "name": "Martelo Sagrado",
+        "type": "weapon",
+        "rarity": "uncommon",
+        "physicalDamage": 7,
+        "magicDamage": 3,
+        "description": "Um martelo abençoado pelos deuses."
+      },
+      "armor": {
+        "id": "shining_armor",
+        "name": "Armadura Reluzente",
+        "type": "armor",
+        "rarity": "uncommon",
+        "defense": 6,
+        "holyResistance": 10,
+        "description": "Armadura que brilha com luz divina."
+      },
+      "consumable": {
+        "id": "holy_water",
+        "name": "Água Benta",
+        "type": "consumable",
+        "heal": 50,
+        "removeDebuff": true,
+        "quantity": 2,
+        "description": "Cura e remove efeitos negativos."
+      }
+    },
+    "tips": [
+      "Classe de suporte",
+      "Difícil de matar",
+      "Equilibre Força, Vitalidade e Carisma"
+    ]
+  }
+}
