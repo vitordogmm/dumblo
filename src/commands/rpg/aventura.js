@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getPlayer, updatePlayer } = require('../../database/queries');
+const { getPlayer, updatePlayer, isBetaTester } = require('../../database/queries');
 const ErrorHandler = require('../../utils/errorHandler');
 const logger = require('../../utils/logger');
 const config = require('../../config/config');
@@ -106,6 +106,7 @@ module.exports = {
       // Em discord.js v14, use `ephemeral: true` para deferReply
       await interaction.deferReply({ ephemeral: true });
       const userId = interaction.user.id;
+      const isBeta = await isBetaTester(userId).catch(() => false);
       const player = await getPlayer(userId);
       if (!player) {
         const embed = new EmbedBuilder()
@@ -132,12 +133,63 @@ module.exports = {
         const sidRef = currentRef.sid || currentRef;
         const stillActive = await client.cache.get(`adv_state_${sidRef}`);
         if (stillActive) {
-          const embed = new EmbedBuilder()
-            .setColor(config.colors.error)
-            .setTitle('⚠️ Aventura em progresso')
-            .setDescription('Você já possui uma aventura em andamento. Conclua-a antes de iniciar outra.')
-            .setTimestamp();
-          return interaction.editReply({ embeds: [embed] });
+          const location = worldData.locations?.[stillActive.locationId] || { name: 'Local', emoji: '🗺️' };
+          let embed;
+          let components = [];
+
+          if (stillActive.type === 'combat') {
+            const enemy = stillActive.enemy;
+            embed = new EmbedBuilder()
+              .setColor(COLOR)
+              .setTitle(`${location.emoji || '🗺️'} ${location.name} — Combate (Turno ${stillActive.turn || 1})`)
+              .setDescription('Retomando sua aventura em combate. Escolha sua ação.')
+              .addFields(
+                { name: 'Seu HP', value: `**${Number(stillActive.player?.hp ?? config.game.startingHP)}**`, inline: true },
+                { name: `${enemy?.name || 'Inimigo'} HP`, value: `**${Number(enemy?.hp ?? enemy?.stats?.hp ?? 30)}**`, inline: true },
+              )
+              .setFooter({ text: 'Dumblo RPG — Combate' })
+              .setTimestamp();
+
+            const row = new ActionRowBuilder().addComponents(
+              new ButtonBuilder().setCustomId(`adv_combat_attack_${sidRef}`).setLabel('Atacar').setStyle(ButtonStyle.Danger),
+              new ButtonBuilder().setCustomId(`adv_combat_defend_${sidRef}`).setLabel('Defender').setStyle(ButtonStyle.Secondary),
+              new ButtonBuilder().setCustomId(`adv_combat_flee_${sidRef}`).setLabel('Fugir').setStyle(ButtonStyle.Primary),
+            );
+            const inv = Array.isArray(player.inventory) ? player.inventory : [];
+            const eqCons = player.gear?.consumable || null;
+            const hasQty = eqCons?.id ? inv.some(i => i.itemId === eqCons.id && Number(i.quantity || 0) > 0) : false;
+            const row2 = new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(`adv_combat_use_consumable_${sidRef}`)
+                .setLabel(eqCons?.name ? `Usar ${eqCons.name}` : 'Usar consumível')
+                .setStyle(ButtonStyle.Success)
+                .setEmoji(eqCons?.emoji || '🧪')
+                .setDisabled(!hasQty)
+            );
+            components = [row, row2];
+          } else if (stillActive.type === 'chest') {
+            const chest = stillActive.chest;
+            embed = buildChestEmbed(player, location, chest);
+            const row = new ActionRowBuilder().addComponents(
+              new ButtonBuilder().setCustomId(`adv_chest_open_${sidRef}`).setLabel('Abrir Baú').setStyle(ButtonStyle.Primary),
+            );
+            components = [row];
+          } else if (stillActive.type === 'npc') {
+            const npc = stillActive.npc;
+            embed = buildNpcEmbed(location, npc);
+            const row = new ActionRowBuilder().addComponents(
+              new ButtonBuilder().setCustomId(`adv_npc_talk_${sidRef}`).setLabel('Conversar').setStyle(ButtonStyle.Secondary),
+            );
+            components = [row];
+          } else {
+            embed = new EmbedBuilder()
+              .setColor(config.colors.error)
+              .setTitle('⚠️ Sessão ativa')
+              .setDescription('Há uma sessão ativa, mas não foi possível reconstruir a interface. Tente novamente mais tarde.')
+              .setTimestamp();
+          }
+
+          return interaction.editReply({ embeds: [embed], components });
         }
         // Limpa referência obsoleta
         try { await client.cache.delete(`adv_current_${userId}`); } catch {}
@@ -183,6 +235,7 @@ module.exports = {
         await client.cache.set(`adv_state_${sid}`, {
           type: 'combat',
           userId,
+          isBeta,
           locationId: location.id,
           enemy: {
             id: enemy.id,
@@ -197,7 +250,10 @@ module.exports = {
           player: {
             hp: hp,
             maxHp: config.game.startingHP + (Number(player.stats?.vitality || 0) * 2),
-            stats: player.stats || {},
+            stats: {
+              ...(player.stats || {}),
+              luck: Number(player.stats?.luck || 0) + (isBeta ? 3 : 0),
+            },
             gear: player.gear || {},
           },
           // A benção divina do Paladino só pode ativar uma vez, no primeiro ataque
@@ -220,7 +276,7 @@ module.exports = {
         const row = new ActionRowBuilder().addComponents(
           new ButtonBuilder().setCustomId(`adv_chest_open_${sid}`).setLabel('Abrir Baú').setStyle(ButtonStyle.Primary),
         );
-        await client.cache.set(`adv_state_${sid}`, { type: 'chest', userId, locationId: location.id, chest }, 900);
+        await client.cache.set(`adv_state_${sid}`, { type: 'chest', userId, isBeta, locationId: location.id, chest }, 900);
         await client.cache.set(`adv_current_${userId}`, { sid }, 900);
         components.push(row);
         return interaction.editReply({ embeds: [embed], components });
@@ -233,7 +289,7 @@ module.exports = {
         const row = new ActionRowBuilder().addComponents(
           new ButtonBuilder().setCustomId(`adv_npc_talk_${sid}`).setLabel('Conversar').setStyle(ButtonStyle.Secondary),
         );
-        await client.cache.set(`adv_state_${sid}`, { type: 'npc', userId, locationId: location.id, npc }, 900);
+        await client.cache.set(`adv_state_${sid}`, { type: 'npc', userId, isBeta, locationId: location.id, npc }, 900);
         await client.cache.set(`adv_current_${userId}`, { sid }, 900);
         components.push(row);
         return interaction.editReply({ embeds: [embed], components });

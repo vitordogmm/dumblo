@@ -4,7 +4,7 @@ const ErrorHandler = require('../utils/errorHandler');
 const config = require('../config/config');
 const classes = require('../data/classes.json');
 const worldData = require('../data/world_1_data.json');
-const { createPlayer, getPlayer, updatePlayer, isAdmin, setInventory } = require('../database/queries');
+const { createPlayer, getPlayer, updatePlayer, isAdmin, setInventory, isBetaTester } = require('../database/queries');
 const { isProhibited } = require('../utils/profanity');
 const COLOR = config.colors?.primary || '#5865F2';
 
@@ -749,6 +749,8 @@ module.exports.handleAdventureCombatAction = async function handleAdventureComba
     let baseWeapon = Number(weapon.physicalDamage || weapon.magicDamage || config.game.startingAttack);
     const isMagic = !!weapon.magicDamage;
     let scale = isMagic ? Number(stats.intelligence || 0) * 0.6 : Number(stats.strength || 0) * 0.6;
+    // Sorte efetiva (o estado de combate já inclui +3 se beta)
+    const isBeta = !!state.isBeta; // flag de beta vinda do estado
     const luck = Number(stats.luck || 0);
     let playerDefense = Number(armor.defense || config.game.startingDefense);
 
@@ -889,11 +891,17 @@ module.exports.handleAdventureCombatAction = async function handleAdventureComba
       // Conclusão: vitórias concedem lupins e XP
       if (state.player.hp > 0 && enemy.hp <= 0) {
         const rewards = enemy.rewards || {};
-        const xpGain = Number(rewards.xp || 0);
+        let xpGain = Number(rewards.xp || 0);
         // Usa campos goldMin/goldMax do worldData como lupins
         const lpMin = Number(rewards.goldMin || 0);
         const lpMax = Number(rewards.goldMax || lpMin);
-        const lupinsGain = Math.max(0, Math.floor(lpMin + Math.random() * Math.max(0, lpMax - lpMin)));
+        let lupinsGain = Math.max(0, Math.floor(lpMin + Math.random() * Math.max(0, lpMax - lpMin)));
+        // Aplicar bônus Beta +10% (arredonda para inteiro)
+        const betaFlag = isBeta || await isBetaTester(state.userId).catch(() => false);
+        if (betaFlag) {
+          xpGain = Math.max(0, Math.round(xpGain * 1.10));
+          lupinsGain = Math.max(0, Math.round(lupinsGain * 1.10));
+        }
         const currentWallet = Number(playerDb?.economy?.wallet?.lupins || 0);
         const newWallet = currentWallet + lupinsGain;
         let newXp = Number(playerDb.xp || 0) + xpGain;
@@ -910,8 +918,9 @@ module.exports.handleAdventureCombatAction = async function handleAdventureComba
         }
         const updateData = { xp: newXp, level: curLevel, statusPoints, 'economy.wallet.lupins': newWallet };
         await updatePlayer(state.userId, updateData);
+        const bonusTag = betaFlag ? ' (inclui +10% Beta)' : '';
         embed.addFields(
-          { name: 'Recompensas', value: `💰 Lupins: **${lupinsGain}** • ⭐ XP: **${xpGain}**${leveled ? `\n🎉 Level UP! Agora você é nível **${curLevel}** (+5 pontos de status)` : ''}`, inline: false }
+          { name: 'Recompensas', value: `💰 Lupins: **${lupinsGain}** • ⭐ XP: **${xpGain}**${bonusTag}${leveled ? `\n🎉 Level UP! Agora você é nível **${curLevel}** (+5 pontos de status)` : ''}`, inline: false }
         );
       }
       // Desabilita
@@ -1161,16 +1170,27 @@ module.exports.handleAdventureChestOpen = async function handleAdventureChestOpe
       }
     }
 
+    // Aplicar bônus Beta +10% em lupins
+    const betaFlag = (!!state.isBeta) || await isBetaTester(state.userId).catch(() => false);
+    let finalLupinsGain = lupinsGain;
+    let betaExtra = 0;
+    if (betaFlag && finalLupinsGain > 0) {
+      const boosted = Math.round(finalLupinsGain * 1.10);
+      betaExtra = boosted - finalLupinsGain;
+      finalLupinsGain = boosted;
+      notes.push(`🧪 Bônus Beta: +10% aplicado (+${betaExtra} lupins).`);
+    }
+
     // Persistir
     const currentWallet = Number(playerDb?.economy?.wallet?.lupins || 0);
-    const newWallet = currentWallet + lupinsGain;
+    const newWallet = currentWallet + finalLupinsGain;
     await updatePlayer(state.userId, { hp: newHp, inventory: inv, 'economy.wallet.lupins': newWallet });
 
     const embed = new EmbedBuilder()
       .setColor(COLOR)
       .setTitle(`${location.emoji || '🗺️'} ${location.name} — Baú Aberto`)
       .setDescription(notes.length ? notes.join('\n') : 'O baú estava vazio...')
-      .addFields({ name: 'Seu HP', value: `**${newHp}**`, inline: true }, { name: 'Lupins (Carteira)', value: `**${newWallet}**`, inline: true })
+      .addFields({ name: 'Seu HP', value: `**${newHp}**`, inline: true }, { name: 'Lupins (Carteira)', value: `**${newWallet}**${betaFlag ? ' (+10% Beta)' : ''}`, inline: true })
       .setFooter({ text: 'Dumblo RPG — Tesouro' })
       .setTimestamp();
 
@@ -1207,9 +1227,14 @@ module.exports.handleAdventureNpcTalk = async function handleAdventureNpcTalk(in
     const npc = state.npc;
     const location = worldData.locations?.[state.locationId] || { name: 'Local', emoji: '🗺️' };
 
-    // Recompensa simples de conversa: XP, e chance pequena de lupins
-    const xpGain = 20 + Math.floor(Math.random() * 40);
-    const lupinsGain = Math.random() < 0.25 ? (10 + Math.floor(Math.random() * 20)) : 0;
+    // Recompensa simples de conversa: XP, e chance pequena de lupins (+10% se Beta)
+    let xpGain = 20 + Math.floor(Math.random() * 40);
+    let lupinsGain = Math.random() < 0.25 ? (10 + Math.floor(Math.random() * 20)) : 0;
+    const betaFlag = (!!state.isBeta) || await isBetaTester(state.userId).catch(() => false);
+    if (betaFlag) {
+      xpGain = Math.round(xpGain * 1.10);
+      lupinsGain = Math.round(lupinsGain * 1.10);
+    }
     let newXp = Number(playerDb.xp || 0) + xpGain;
     const currentWallet = Number(playerDb?.economy?.wallet?.lupins || 0);
     const newWallet = currentWallet + lupinsGain;
@@ -1252,7 +1277,7 @@ Escreva uma resposta breve (1–3 frases), em português brasileiro, coerente co
       .setColor(COLOR)
       .setTitle(`${location.emoji || '🗺️'} ${location.name} — Conversa com ${npc.name}`)
       .setDescription(`${npc.emoji || '🧍'} ${npc.name}: ${aiLine}`)
-      .addFields({ name: 'Ganhos', value: `⭐ XP: **${xpGain}**${lupinsGain ? ` • 💰 Lupins: **${lupinsGain}**` : ''}${leveled ? `\n🎉 Level UP! Agora você é nível **${curLevel}** (+5 pontos de status)` : ''}` })
+      .addFields({ name: 'Ganhos', value: `⭐ XP: **${xpGain}**${betaFlag ? ' (+10% Beta)' : ''}${lupinsGain ? ` • 💰 Lupins: **${lupinsGain}**${betaFlag ? ' (+10% Beta)' : ''}` : ''}${leveled ? `\n🎉 Level UP! Agora você é nível **${curLevel}** (+5 pontos de status)` : ''}` })
       .setFooter({ text: 'Dumblo RPG — NPC' })
       .setTimestamp();
 

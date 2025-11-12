@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags, time, TimestampStyles } = require('discord.js');
-const { getPlayer, updatePlayer } = require('../../database/queries');
+const { getPlayer, updatePlayer, isBetaTester } = require('../../database/queries');
 const ErrorHandler = require('../../utils/errorHandler');
 const logger = require('../../utils/logger');
 const config = require('../../config/config');
@@ -54,8 +54,12 @@ module.exports = {
         }
       }
 
-      const luck = player?.stats?.luck ?? 0;
-      const gained = computeDailyAmount(luck);
+      // Bônus Beta: +3 sorte efetiva e +10% nos lupins diários
+      const isBeta = await isBetaTester(userId).catch(() => false);
+      const baseLuck = player?.stats?.luck ?? 0;
+      const effectiveLuck = baseLuck + (isBeta ? 3 : 0);
+      const baseGained = computeDailyAmount(effectiveLuck);
+      const gained = isBeta ? Math.round(baseGained * 1.10) : baseGained;
       const wallet = Number(player?.economy?.wallet?.lupins || 0) + gained;
       const history = Array.isArray(player?.economy?.history) ? player.economy.history.slice(-49) : [];
       const nowIso = new Date().toISOString();
@@ -73,9 +77,9 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(ORANGE)
         .setTitle('🎁 Daily de Lupins')
-        .setDescription(`Você recebeu **${gained}** ${LUPINS_EMOJI} hoje!`)
+        .setDescription(`Você recebeu **${gained}** ${LUPINS_EMOJI} hoje!${isBeta ? ' (+10% Beta)' : ''}`)
         .addFields(
-          { name: '🍀 Sorte', value: `${luck}`, inline: true },
+          { name: '🍀 Sorte', value: `${effectiveLuck}${isBeta ? ' (+3 Beta)' : ''}`, inline: true },
           { name: '👜 Carteira', value: `${wallet} ${LUPINS_EMOJI}`, inline: true },
           { name: '🔔 Próximo Daily', value: `${time(Math.floor(nextTime.getTime() / 1000), TimestampStyles.RelativeTime)}`, inline: true },
         )

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getPlayer } = require('../../database/queries');
+const { getPlayer, isBetaTester } = require('../../database/queries');
 const ErrorHandler = require('../../utils/errorHandler');
 const logger = require('../../utils/logger');
 const config = require('../../config/config');
@@ -28,6 +28,8 @@ module.exports = {
       }
 
       const stats = player.stats || {};
+      const isBeta = await isBetaTester(userId).catch(() => false);
+      const effectiveLuck = Number(stats.luck ?? 0) + (isBeta ? 3 : 0);
       const available = Number(player.statusPoints || 0);
 
       const embed = new EmbedBuilder()
@@ -35,7 +37,7 @@ module.exports = {
         .setTitle(`📊 Status de ${player.name}`)
         .setDescription('Distribua pontos para melhorar seus atributos.\n\nCarisma não pode ser modificado por enquanto.')
         .addFields(
-          { name: 'Atributos', value: `💪 Força: **${stats.strength ?? 0}**\n🧠 Inteligência: **${stats.intelligence ?? 0}**\n⚡ Agilidade: **${stats.agility ?? 0}**\n❤️ Vitalidade: **${stats.vitality ?? 0}**\n🍀 Sorte: **${stats.luck ?? 0}**\n💬 Carisma: **${stats.charisma ?? 0}**`, inline: false },
+          { name: 'Atributos', value: `💪 Força: **${stats.strength ?? 0}**\n🧠 Inteligência: **${stats.intelligence ?? 0}**\n⚡ Agilidade: **${stats.agility ?? 0}**\n❤️ Vitalidade: **${stats.vitality ?? 0}**\n🍀 Sorte: **${effectiveLuck}${isBeta ? ' (+3 Beta)' : ''}**\n💬 Carisma: **${stats.charisma ?? 0}**`, inline: false },
           { name: 'Pontos Disponíveis', value: `**${available}**`, inline: true },
         )
         .setFooter({ text: 'Dumblo RPG', iconURL: interaction.client.user.displayAvatarURL() })

@@ -206,6 +206,14 @@ async function setBetaTester(userId, addedBy) {
   });
 }
 
+async function isBetaTester(userId) {
+  return withRetry('isBetaTester', async () => {
+    const ref = getDb().collection(COLLECTIONS.BETA_TESTERS).doc(userId);
+    const doc = await ref.get();
+    return doc.exists;
+  });
+}
+
 module.exports = {
   getPlayer,
   createPlayer,
@@ -219,4 +227,5 @@ module.exports = {
   getInventory,
   setInventory,
   setBetaTester,
+  isBetaTester,
 };

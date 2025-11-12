@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags, userMention, time, TimestampStyles } = require('discord.js');
-const { getPlayer } = require('../../database/queries');
+const { getPlayer, isBetaTester } = require('../../database/queries');
 const ErrorHandler = require('../../utils/errorHandler');
 const logger = require('../../utils/logger');
 const config = require('../../config/config');
@@ -25,13 +25,15 @@ function progressBar(pct, size = 10) {
   return `${'▰'.repeat(filled)}${'▱'.repeat(empty)}`;
 }
 
-function buildSelfProfileEmbed(player, discordUser) {
+async function buildSelfProfileEmbed(player, discordUser) {
   const cls = classes[player.classId];
   const level = player.level ?? 0;
   const xp = player.xp ?? 0;
   const { needed, pct } = computeLevelProgress(level, xp);
   const bar = progressBar(pct, 12);
   const createdAtUnix = player?.meta?.createdAtUnix;
+  const isBeta = await isBetaTester(player.id || discordUser.id).catch(() => false);
+  const effectiveLuck = Number(player.stats?.luck ?? 0) + (isBeta ? 3 : 0);
 
   const embed = new EmbedBuilder()
     .setColor(config.colors.primary)
@@ -44,7 +46,7 @@ function buildSelfProfileEmbed(player, discordUser) {
     { name: '🏷️ Classe', value: cls ? `${cls.emoji} ${cls.name}` : (player.classId || 'Desconhecida'), inline: true },
     { name: '🧱 Nível', value: `Nível ${level}`, inline: true },
     { name: '⭐ XP', value: `${xp} / ${needed} (${pct}%)\n${bar}`, inline: true },
-    { name: '📊 Status', value: `💪 ${player.stats?.strength ?? 0} • 🧠 ${player.stats?.intelligence ?? 0} • ⚡ ${player.stats?.agility ?? 0} • ❤️ ${player.stats?.vitality ?? 0} • 🍀 ${player.stats?.luck ?? 0} • 💬 ${player.stats?.charisma ?? 0}`, inline: false },
+    { name: '📊 Status', value: `💪 ${player.stats?.strength ?? 0} • 🧠 ${player.stats?.intelligence ?? 0} • ⚡ ${player.stats?.agility ?? 0} • ❤️ ${player.stats?.vitality ?? 0} • 🍀 ${effectiveLuck}${isBeta ? ' (+3 Beta)' : ''} • 💬 ${player.stats?.charisma ?? 0}`, inline: false },
     {
       name: '🎒 Equipamentos',
       value:
@@ -111,7 +113,7 @@ module.exports = {
         return interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
       }
 
-      const embed = isSelf ? buildSelfProfileEmbed(player, target) : buildMentionProfileEmbed(player, target);
+      const embed = isSelf ? (await buildSelfProfileEmbed(player, target)) : buildMentionProfileEmbed(player, target);
       return interaction.reply({ embeds: [embed] });
     } catch (error) {
       await ErrorHandler.handleCommandError(error, interaction);
