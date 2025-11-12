@@ -10,7 +10,11 @@ const CacheService = require('./ai/cache');
 const { createKaori } = require('./kaori');
 
 // Validação de variáveis de ambiente obrigatórias
-const isDev = (process.env.NODE_ENV === 'development');
+const lifecycle = process.env.npm_lifecycle_event || '';
+const isDevExplicit = lifecycle === 'dev';
+const isDevEnv = process.env.NODE_ENV === 'development';
+// Em 'start', sempre considerar produção, mesmo que NODE_ENV esteja como 'development'
+const isDev = isDevExplicit || (lifecycle !== 'start' && isDevEnv);
 const requiredEnv = [
   // Tokens/IDs variam entre desenvolvimento e produção
   ...(isDev ? ['DEV_BOT_TOKEN', 'DEV_BOT_ID', 'DEV_SERVER'] : ['DISCORD_TOKEN', 'CLIENT_ID']),

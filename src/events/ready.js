@@ -56,7 +56,11 @@ module.exports = {
 
       // Registrar comandos: modo dev (guild) vs produção (global)
       try {
-        const isDev = (process.env.NODE_ENV === 'development');
+        const lifecycle = process.env.npm_lifecycle_event || '';
+        const isDevExplicit = lifecycle === 'dev';
+        const isDevEnv = process.env.NODE_ENV === 'development';
+        // Em 'start', sempre considerar produção, mesmo que NODE_ENV esteja como 'development'
+        const isDev = isDevExplicit || (lifecycle !== 'start' && isDevEnv);
         if (isDev) {
           const rest = new REST({ version: '10' }).setToken(process.env.DEV_BOT_TOKEN);
           await rest.put(
