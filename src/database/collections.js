@@ -8,6 +8,7 @@ const COLLECTIONS = {
   ADMINS: 'admins',
   BETA_TESTERS: 'beta_testers',
   ERRORS: 'errors', // opcional para logging de erros críticos
+  PATERN_SERVERS: 'patern-servers',
 };
 
 module.exports = { COLLECTIONS };

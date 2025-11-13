@@ -7,6 +7,7 @@ const {
   deletePlayer,
   grantAdmin,
   isAdmin,
+  setPaternServer,
 } = require('../database/queries');
 
 const OWNER_ID = '1249482858968645692';
@@ -149,6 +150,48 @@ module.exports = {
         log.setThumbnail(target.displayAvatarURL({ size: 128 }));
         log.addFields({ name: 'Quando', value: time(Math.floor(Date.now()/1000), TimestampStyles.ShortDateTime), inline: true });
         return sendLog(client, log);
+      }
+
+      if (command === 'setpatern') {
+        const allowed = message.author.id === OWNER_ID || await isAdmin(message.author.id);
+        if (!allowed) {
+          const embed = buildEmbed(
+            config.colors.error,
+            '⛔ Acesso Negado',
+            'Você não possui permissão para usar este comando.'
+          );
+          return replyAndDelete(message, { embeds: [embed] });
+        }
+
+        const serverIdArg = args.find((a) => /^\d{17,20}$/.test(a)) || '';
+        if (!serverIdArg) {
+          const embed = buildEmbed(
+            config.colors.error,
+            '❌ Uso inválido',
+            'Informe: `d.setpatern <id do servidor>`'
+          );
+          return replyAndDelete(message, { embeds: [embed] });
+        }
+
+        const guild = client.guilds.cache.get(serverIdArg) || await client.guilds.fetch(serverIdArg).catch(() => null);
+        if (!guild) {
+          const embed = buildEmbed(
+            config.colors.error,
+            '❌ Servidor não encontrado',
+            `Não foi possível obter dados do servidor de ID ${serverIdArg}.`
+          );
+          return replyAndDelete(message, { embeds: [embed] });
+        }
+
+        const name = guild.name || serverIdArg;
+        const icon = guild.iconURL({ size: 128 }) || '';
+        await setPaternServer(serverIdArg, name, icon);
+        const embed = buildEmbed(
+          config.colors.primary,
+          '✅ Padrão salvo',
+          `Servidor salvo em patern-servers\nID: **${serverIdArg}**\nNome: **${name}**\nIcone: ${icon || '—'}`
+        );
+        return replyAndDelete(message, { embeds: [embed] });
       }
 
       if (command === 'setpoints') {

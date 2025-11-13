@@ -93,6 +93,17 @@ module.exports = {
         }
       }
 
+      // Itens: selecionar e voltar
+      if (interaction.isStringSelectMenu() && interaction.customId.startsWith('item_select_')) {
+        const { handleItemSelect } = module.exports;
+        return handleItemSelect(interaction, client);
+      }
+
+      if (interaction.isButton() && interaction.customId.startsWith('item_back_')) {
+        const { handleItemBack } = module.exports;
+        return handleItemBack(interaction, client);
+      }
+
       // Help: navegação de páginas
       if (interaction.isButton() && interaction.customId.startsWith('help_nav_')) {
         const { handleHelpNav } = module.exports;
@@ -155,6 +166,15 @@ module.exports = {
         if (interaction.customId.startsWith('econ_hist_nav_')) {
           const { handleHistoryNav } = module.exports;
           return handleHistoryNav(interaction, client);
+        }
+        // Hall: navegação e troca de modo
+        if (interaction.customId.startsWith('hall_nav_')) {
+          const { handleHallNav } = module.exports;
+          return handleHallNav(interaction, client);
+        }
+        if (interaction.customId.startsWith('hall_mode_')) {
+          const { handleHallMode } = module.exports;
+          return handleHallMode(interaction, client);
         }
       // Aventura: combate, baú e NPC
       if (interaction.isButton() && interaction.customId.startsWith('adv_combat_use_consumable_')) {
@@ -1739,6 +1759,146 @@ module.exports.handleInventoryUnequipOrRefresh = async function handleInventoryU
   }
 };
 
+// ===== Itens (/item): selecionar item e voltar =====
+module.exports.handleItemSelect = async function handleItemSelect(interaction, client) {
+  try {
+    await interaction.deferUpdate();
+    const m = interaction.customId.match(/^item_select_(\d+)$/);
+    if (!m) return;
+    const ownerId = m[1];
+    if (interaction.user.id !== ownerId) {
+      return interaction.followUp({ content: 'Apenas o dono desta visão pode interagir.', flags: MessageFlags.Ephemeral });
+    }
+    const value = interaction.values?.[0];
+    if (!value) return;
+
+    const itemsMap = worldData.items || {};
+    const item = itemsMap[value];
+    if (!item) {
+      return interaction.followUp({ content: 'Item inválido ou desconhecido.', flags: MessageFlags.Ephemeral });
+    }
+
+    const player = await getPlayer(ownerId);
+    if (!player) {
+      return interaction.followUp({ content: 'Perfil não encontrado.', flags: MessageFlags.Ephemeral });
+    }
+    const inv = Array.isArray(player.inventory) ? player.inventory : [];
+    const qty = inv.filter(i => i.itemId === (item.id || value)).reduce((acc, i) => acc + Number(i.quantity || 0), 0);
+
+    const stats = item.stats || {};
+    const reqs = item.requirements || {};
+
+    function fmtStatLine() {
+      const parts = [];
+      if (stats.physicalDamage != null) parts.push(`⚔️ Físico: **${Number(stats.physicalDamage)}**`);
+      if (stats.magicDamage != null) parts.push(`✨ Mágico: **${Number(stats.magicDamage)}**`);
+      if (stats.defense != null) parts.push(`🛡️ Defesa: **${Number(stats.defense)}**`);
+      if (stats.critBonus != null) parts.push(`🎯 Crítico: **${(Number(stats.critBonus) * 100).toFixed(0)}%**`);
+      if (stats.attackSpeed != null) parts.push(`⚡ Velocidade: **${Number(stats.attackSpeed)}**`);
+      return parts.length ? parts.join(' • ') : '—';
+    }
+
+    function fmtReqs() {
+      const parts = [];
+      if (reqs.level != null) parts.push(`Nível ${reqs.level}`);
+      if (reqs.strength != null) parts.push(`Força ${reqs.strength}`);
+      if (reqs.intelligence != null) parts.push(`Inteligência ${reqs.intelligence}`);
+      if (reqs.agility != null) parts.push(`Agilidade ${reqs.agility}`);
+      if (reqs.vitality != null) parts.push(`Vitalidade ${reqs.vitality}`);
+      if (reqs.luck != null) parts.push(`Sorte ${reqs.luck}`);
+      if (reqs.charisma != null) parts.push(`Carisma ${reqs.charisma}`);
+      if (reqs.wisdom != null) parts.push(`Sabedoria ${reqs.wisdom}`);
+      return parts.length ? parts.join(' • ') : '—';
+    }
+
+    const embed = new EmbedBuilder()
+      .setColor(COLOR)
+      .setTitle(`${item.emoji || '📦'} ${item.name}`)
+      .setDescription(item.description || 'Sem descrição.')
+      .addFields(
+        { name: 'Tipo', value: `${item.type || 'item'}${item.weaponType ? ` • ${item.weaponType}` : ''} • ${item.rarity || 'common'}`, inline: false },
+        { name: 'Nível', value: `${item.level != null ? item.level : '—'}`, inline: true },
+        { name: 'Stats', value: fmtStatLine(), inline: false },
+        { name: 'Requisitos', value: fmtReqs(), inline: false },
+        { name: 'Preço de venda', value: `${Number(item.sellPrice || 0)}`, inline: true },
+        { name: 'Quantidade', value: `${qty}`, inline: true },
+      )
+      .setFooter({ text: 'Dumblo RPG — Item' })
+      .setTimestamp();
+
+    if (item.specialEffect) {
+      embed.addFields({ name: 'Efeito especial', value: String(item.specialEffect), inline: false });
+    }
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId(`item_back_${ownerId}`).setLabel('Voltar').setStyle(ButtonStyle.Secondary)
+    );
+
+    return interaction.editReply({ embeds: [embed], components: [row] });
+  } catch (error) {
+    return ErrorHandler.handleCommandError(error, interaction);
+  }
+};
+
+module.exports.handleItemBack = async function handleItemBack(interaction, client) {
+  try {
+    await interaction.deferUpdate();
+    const m = interaction.customId.match(/^item_back_(\d+)$/);
+    if (!m) return;
+    const ownerId = m[1];
+    if (interaction.user.id !== ownerId) {
+      return interaction.followUp({ content: 'Apenas o dono desta visão pode interagir.', flags: MessageFlags.Ephemeral });
+    }
+    const player = await getPlayer(ownerId);
+    if (!player) {
+      return interaction.followUp({ content: 'Perfil não encontrado.', flags: MessageFlags.Ephemeral });
+    }
+    const itemsMap = worldData.items || {};
+    const inv = Array.isArray(player.inventory) ? player.inventory : [];
+
+    const embed = new EmbedBuilder()
+      .setColor(COLOR)
+      .setTitle(`📦 Itens de ${player.name || 'Jogador'}`)
+      .setDescription(inv.length ? 'Selecione um item abaixo para ver detalhes.' : 'Você não possui itens no inventário ainda.')
+      .setFooter({ text: 'Dumblo RPG — Itens' })
+      .setTimestamp();
+
+    if (inv.length === 0) {
+      return interaction.editReply({ embeds: [embed], components: [] });
+    }
+
+    const byIdQty = new Map();
+    for (const it of inv) {
+      const qty = Number(it.quantity || 1);
+      byIdQty.set(it.itemId, (byIdQty.get(it.itemId) || 0) + qty);
+    }
+    const optionIds = Array.from(byIdQty.keys());
+
+    const select = new StringSelectMenuBuilder()
+      .setCustomId(`item_select_${ownerId}`)
+      .setPlaceholder('Selecione um item')
+      .setMinValues(1)
+      .setMaxValues(1);
+
+    optionIds.slice(0, 25).forEach((id) => {
+      const meta = itemsMap[id];
+      if (!meta) return;
+      const qty = byIdQty.get(id) || 0;
+      select.addOptions(
+        new StringSelectMenuOptionBuilder()
+          .setLabel(`${meta.emoji || '📦'} ${meta.name}`)
+          .setValue(meta.id || id)
+          .setDescription(`${meta.type || 'item'} • ${meta.rarity || 'common'}${qty > 0 ? ` • x${qty}` : ''}`)
+      );
+    });
+
+    const row = new ActionRowBuilder().addComponents(select);
+    return interaction.editReply({ embeds: [embed], components: [row] });
+  } catch (error) {
+    return ErrorHandler.handleCommandError(error, interaction);
+  }
+};
+
 // ===== Economia: Handlers de confirmação =====
 module.exports.handleDepositConfirmOrCancel = async function handleDepositConfirmOrCancel(interaction, client) {
   try {
@@ -2130,6 +2290,119 @@ module.exports.handleHelpNav = async function handleHelpNav(interaction, client)
     const hasAdminAccess = Boolean(guildAdmin || dbAdmin);
     const view = _buildHelpPage(client, requesterId, category, targetPage, hasAdminAccess);
     return interaction.editReply({ embeds: [view.embed], components: view.components });
+  } catch (error) {
+    return ErrorHandler.handleCommandError(error, interaction);
+  }
+};
+
+module.exports.handleHallNav = async function handleHallNav(interaction, client) {
+  try {
+    if (!interaction.deferred && !interaction.replied) {
+      await interaction.deferUpdate();
+    }
+    const m1 = interaction.customId.match(/^hall_nav_(server|global)_(first|prev|next|last)_(\d+)$/);
+    const m2 = interaction.customId.match(/^hall_nav_(server|global)_(\d+)$/);
+    const m3 = interaction.customId.match(/^hall_page_(server|global)_(\d+)$/);
+    let mode, page;
+    if (m1) { mode = m1[1]; page = Math.max(1, parseInt(m1[4], 10) || 1); }
+    else if (m2) { mode = m2[1]; page = Math.max(1, parseInt(m2[2], 10) || 1); }
+    else if (m3) { mode = m3[1]; page = Math.max(1, parseInt(m3[2], 10) || 1); }
+    else { return; }
+    const { getDb } = require('../database/firebase');
+    const db = getDb();
+    const col = db.collection('players');
+    const players = [];
+    let last = null;
+    while (players.length < 1000) {
+      let q = col.select('level', 'stats', 'gear', 'name').limit(Math.min(500, 1000 - players.length));
+      if (last) q = q.startAfter(last);
+      const snap = await q.get();
+      if (snap.empty) break;
+      for (const doc of snap.docs) players.push({ id: doc.id, ...doc.data() });
+      last = snap.docs[snap.docs.length - 1];
+      if (snap.size < Math.min(500, 1000 - players.length)) break;
+    }
+    let memberIdsSet = null;
+    if (mode === 'server') {
+      const guild = interaction.guild;
+      if (!guild) {
+        const embed = new EmbedBuilder().setColor(config.colors.error).setTitle('❌ Indisponível').setDescription('Este ranking só funciona em servidores.').setTimestamp();
+        return interaction.editReply({ embeds: [embed], components: [] });
+      }
+      try {
+        const fetchPromise = guild.members.fetch();
+        const timeout = new Promise((resolve) => setTimeout(() => resolve(null), 2000));
+        const members = await Promise.race([fetchPromise, timeout]);
+        if (members && members.size) {
+          memberIdsSet = new Set(members.map(m => m.id));
+        } else {
+          const cache = guild.members.cache;
+          memberIdsSet = new Set(cache.map(m => m.id));
+        }
+      } catch {
+        const cache = guild.members.cache;
+        memberIdsSet = new Set(cache.map(m => m.id));
+      }
+    }
+    const s = (p) => {
+      const level = Number(p.level || 0);
+      const st = p.stats || {};
+      const statsSum = Number(st.strength || 0) + Number(st.intelligence || 0) + Number(st.agility || 0) + Number(st.vitality || 0) + Number(st.luck || 0);
+      const w = p.gear?.weapon || {};
+      const a = p.gear?.armor || {};
+      const weaponPower = Math.max(Number(w.physicalDamage || 0), Number(w.magicDamage || 0));
+      const armorPower = Number(a.defense || 0) + Number(a.magicDefense || 0);
+      return (level * 1000) + (statsSum * 100) + (weaponPower * 50) + (armorPower * 30);
+    };
+    const filtered = memberIdsSet ? players.filter(p => memberIdsSet.has(p.id)) : players;
+    const ranked = filtered.map(p => ({ id: p.id, name: p.name || 'Jogador', level: Number(p.level || 0), score: s(p) })).sort((a, b) => b.score - a.score);
+    const perPage = 10;
+    const total = ranked.length;
+    const pages = Math.max(1, Math.ceil(total / perPage));
+    const current = Math.min(Math.max(1, page), pages);
+    const start = (current - 1) * perPage;
+    const slice = ranked.slice(start, start + perPage);
+    const lines = slice.map((e, idx) => {
+      const rank = start + idx + 1;
+      let medal = '';
+      if (rank === 1) medal = '🥇 ';
+      else if (rank === 2) medal = '🥈 ';
+      else if (rank === 3) medal = '🥉 ';
+      return `#${rank} ${medal}${e.name} — Score: ${e.score} • Lv ${e.level}`;
+    }).join('\n');
+    const embed = new EmbedBuilder()
+      .setColor(config.colors.primary)
+      .setTitle(`Hall — ${mode === 'server' ? 'Server' : 'Global'}`)
+      .setDescription(lines.length ? lines : 'Nenhum jogador encontrado.')
+      .addFields({ name: 'Página', value: `${current}/${pages}`, inline: true }, { name: 'Total', value: `${total}`, inline: true })
+      .setFooter({ text: 'Dumblo RPG — Hall' })
+      .setTimestamp();
+    const nav = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId(`hall_nav_${mode}_first_1`).setEmoji('⏮️').setStyle(ButtonStyle.Secondary).setDisabled(current <= 1),
+      new ButtonBuilder().setCustomId(`hall_nav_${mode}_prev_${current - 1}`).setEmoji('◀️').setStyle(ButtonStyle.Secondary).setDisabled(current <= 1),
+      new ButtonBuilder().setCustomId(`hall_page_${mode}_${current}`).setLabel(`Página ${current}/${pages}`).setStyle(ButtonStyle.Secondary).setDisabled(true),
+      new ButtonBuilder().setCustomId(`hall_nav_${mode}_next_${current + 1}`).setEmoji('▶️').setStyle(ButtonStyle.Secondary).setDisabled(current >= pages),
+      new ButtonBuilder().setCustomId(`hall_nav_${mode}_last_${pages}`).setEmoji('⏭️').setStyle(ButtonStyle.Secondary).setDisabled(current >= pages),
+    );
+    const toggle = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId(`hall_mode_server_${current}`).setLabel('Server').setStyle(ButtonStyle.Primary).setDisabled(mode === 'server'),
+      new ButtonBuilder().setCustomId(`hall_mode_global_${current}`).setLabel('Global').setStyle(ButtonStyle.Primary).setDisabled(mode === 'global'),
+    );
+    return interaction.editReply({ embeds: [embed], components: [nav, toggle] });
+  } catch (error) {
+    return ErrorHandler.handleCommandError(error, interaction);
+  }
+};
+
+module.exports.handleHallMode = async function handleHallMode(interaction, client) {
+  try {
+    const m = interaction.customId.match(/^hall_mode_(server|global)_(\d+)$/);
+    if (!m) return;
+    const nextMode = m[1];
+    const page = Math.max(1, parseInt(m[2], 10) || 1);
+    interaction.customId = `hall_nav_${nextMode}_prev_${page}`;
+    const { handleHallNav } = module.exports;
+    return handleHallNav(interaction, client);
   } catch (error) {
     return ErrorHandler.handleCommandError(error, interaction);
   }

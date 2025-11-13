@@ -214,6 +214,14 @@ async function isBetaTester(userId) {
   });
 }
 
+async function setPaternServer(serverId, serverName, serverIcon) {
+  return withRetry('setPaternServer', async () => {
+    const ref = getDb().collection(COLLECTIONS.PATERN_SERVERS).doc(serverId);
+    await ref.set({ serverId, serverName, serverIcon }, { merge: true });
+    return true;
+  });
+}
+
 module.exports = {
   getPlayer,
   createPlayer,
@@ -228,4 +236,5 @@ module.exports = {
   setInventory,
   setBetaTester,
   isBetaTester,
+  setPaternServer,
 };

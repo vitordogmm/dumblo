@@ -1277,6 +1277,448 @@
       "sellPrice": 800,
       "stackable": false
     }
+    ,
+    "rusty_sword": {
+      "id": "rusty_sword",
+      "name": "Espada Enferrujada",
+      "type": "weapon",
+      "weaponType": "sword",
+      "rarity": "common",
+      "emoji": "🗡️",
+      "description": "Uma espada velha e enferrujada. Melhor que nada, mas precisa de manutenção urgente.",
+      "level": 1,
+      "stats": {
+        "physicalDamage": 8,
+        "magicDamage": 0,
+        "critBonus": 0.00,
+        "attackSpeed": 1.0
+      },
+      "requirements": {
+        "level": 1,
+        "strength": 0
+      },
+      "sellPrice": 20,
+      "stackable": false
+    },
+    "iron_sword": {
+      "id": "iron_sword",
+      "name": "Espada de Ferro",
+      "type": "weapon",
+      "weaponType": "sword",
+      "rarity": "common",
+      "emoji": "⚔️",
+      "description": "Espada forjada em ferro de qualidade. Confiável e resistente.",
+      "level": 3,
+      "stats": {
+        "physicalDamage": 15,
+        "magicDamage": 0,
+        "critBonus": 0.02,
+        "attackSpeed": 1.0
+      },
+      "requirements": {
+        "level": 3,
+        "strength": 5
+      },
+      "sellPrice": 80,
+      "stackable": false
+    },
+    "steel_blade": {
+      "id": "steel_blade",
+      "name": "Lâmina de Aço",
+      "type": "weapon",
+      "weaponType": "sword",
+      "rarity": "uncommon",
+      "emoji": "⚔️",
+      "description": "Lâmina forjada em aço temperado. Corta com precisão mortal.",
+      "level": 6,
+      "stats": {
+        "physicalDamage": 25,
+        "magicDamage": 0,
+        "critBonus": 0.05,
+        "attackSpeed": 1.1
+      },
+      "requirements": {
+        "level": 6,
+        "strength": 8
+      },
+      "sellPrice": 180,
+      "stackable": false
+    },
+    "flameblade": {
+      "id": "flameblade",
+      "name": "Lâmina Flamejante",
+      "type": "weapon",
+      "weaponType": "sword",
+      "rarity": "rare",
+      "emoji": "🔥",
+      "description": "Espada envolta em chamas eternas. Queima tudo que toca.",
+      "level": 10,
+      "stats": {
+        "physicalDamage": 30,
+        "magicDamage": 15,
+        "critBonus": 0.08,
+        "attackSpeed": 1.0
+      },
+      "requirements": {
+        "level": 10,
+        "strength": 12,
+        "intelligence": 5
+      },
+      "specialEffect": "20% chance de queimar o inimigo (5 dano por turno durante 3 turnos)",
+      "sellPrice": 450,
+      "stackable": false
+    },
+    "demon_slayer": {
+      "id": "demon_slayer",
+      "name": "Matadora de Demônios",
+      "type": "weapon",
+      "weaponType": "sword",
+      "rarity": "epic",
+      "emoji": "⚔️",
+      "description": "Espada lendária forjada para caçar demônios. Irradia poder sagrado.",
+      "level": 15,
+      "stats": {
+        "physicalDamage": 45,
+        "magicDamage": 20,
+        "critBonus": 0.12,
+        "attackSpeed": 1.2
+      },
+      "requirements": {
+        "level": 15,
+        "strength": 18,
+        "charisma": 8
+      },
+      "specialEffect": "+50% de dano contra inimigos tipo demônio/sombrio",
+      "sellPrice": 1200,
+      "stackable": false
+    },
+    "wooden_bow": {
+      "id": "wooden_bow",
+      "name": "Arco de Madeira",
+      "type": "weapon",
+      "weaponType": "bow",
+      "rarity": "common",
+      "emoji": "🏹",
+      "description": "Arco simples feito de madeira. Perfeito para iniciantes.",
+      "level": 1,
+      "stats": {
+        "physicalDamage": 10,
+        "magicDamage": 0,
+        "critBonus": 0.05,
+        "attackSpeed": 0.9
+      },
+      "requirements": {
+        "level": 1,
+        "agility": 3
+      },
+      "sellPrice": 25,
+      "stackable": false
+    },
+    "hunters_bow": {
+      "id": "hunters_bow",
+      "name": "Arco do Caçador",
+      "type": "weapon",
+      "weaponType": "bow",
+      "rarity": "uncommon",
+      "emoji": "🏹",
+      "description": "Arco usado por caçadores experientes. Precisão e alcance superiores.",
+      "level": 5,
+      "stats": {
+        "physicalDamage": 22,
+        "magicDamage": 0,
+        "critBonus": 0.12,
+        "attackSpeed": 1.0
+      },
+      "requirements": {
+        "level": 5,
+        "agility": 10
+      },
+      "sellPrice": 150,
+      "stackable": false
+    },
+    "elven_longbow": {
+      "id": "elven_longbow",
+      "name": "Arco Longo Élfico",
+      "type": "weapon",
+      "weaponType": "bow",
+      "rarity": "rare",
+      "emoji": "🏹",
+      "description": "Arco élfico ancestral. Feito de madeira da árvore sagrada.",
+      "level": 11,
+      "stats": {
+        "physicalDamage": 35,
+        "magicDamage": 10,
+        "critBonus": 0.18,
+        "attackSpeed": 1.1
+      },
+      "requirements": {
+        "level": 11,
+        "agility": 16,
+        "luck": 8
+      },
+      "specialEffect": "15% chance de acerto duplo",
+      "sellPrice": 650,
+      "stackable": false
+    },
+    "apprentice_staff": {
+      "id": "apprentice_staff",
+      "name": "Cajado do Aprendiz",
+      "type": "weapon",
+      "weaponType": "staff",
+      "rarity": "common",
+      "emoji": "🪄",
+      "description": "Cajado básico para magos iniciantes. Amplifica magia de forma modesta.",
+      "level": 1,
+      "stats": {
+        "physicalDamage": 3,
+        "magicDamage": 12,
+        "critBonus": 0.03,
+        "attackSpeed": 0.8
+      },
+      "requirements": {
+        "level": 1,
+        "intelligence": 5
+      },
+      "sellPrice": 30,
+      "stackable": false
+    },
+    "wizards_staff": {
+      "id": "wizards_staff",
+      "name": "Cajado do Feiticeiro",
+      "type": "weapon",
+      "weaponType": "staff",
+      "rarity": "uncommon",
+      "emoji": "🔮",
+      "description": "Cajado ornamentado usado por feiticeiros competentes. Cristal no topo brilha com poder.",
+      "level": 6,
+      "stats": {
+        "physicalDamage": 5,
+        "magicDamage": 28,
+        "critBonus": 0.06,
+        "attackSpeed": 0.9
+      },
+      "requirements": {
+        "level": 6,
+        "intelligence": 12
+      },
+      "sellPrice": 200,
+      "stackable": false
+    },
+    "archmage_staff": {
+      "id": "archmage_staff",
+      "name": "Cajado do Arquimago",
+      "type": "weapon",
+      "weaponType": "staff",
+      "rarity": "epic",
+      "emoji": "✨",
+      "description": "Cajado lendário empunhado apenas pelos maiores arquimagos. Poder arcano flui através dele.",
+      "level": 14,
+      "stats": {
+        "physicalDamage": 8,
+        "magicDamage": 55,
+        "critBonus": 0.10,
+        "attackSpeed": 1.0
+      },
+      "requirements": {
+        "level": 14,
+        "intelligence": 22,
+        "wisdom": 10
+      },
+      "specialEffect": "Reduz custo de mana em 15%",
+      "sellPrice": 1500,
+      "stackable": false
+    },
+    "poisoned_blade": {
+      "id": "poisoned_blade",
+      "name": "Lâmina Envenenada",
+      "type": "weapon",
+      "weaponType": "dagger",
+      "rarity": "uncommon",
+      "emoji": "☠️",
+      "description": "Adaga coberta com veneno letal. Um corte pode ser fatal.",
+      "level": 7,
+      "stats": {
+        "physicalDamage": 18,
+        "magicDamage": 0,
+        "critBonus": 0.15,
+        "attackSpeed": 1.4
+      },
+      "requirements": {
+        "level": 7,
+        "agility": 12,
+        "luck": 6
+      },
+      "specialEffect": "30% chance de envenenar (8 dano por turno durante 4 turnos)",
+      "sellPrice": 280,
+      "stackable": false
+    },
+    "shadow_fang": {
+      "id": "shadow_fang",
+      "name": "Presa das Sombras",
+      "type": "weapon",
+      "weaponType": "dagger",
+      "rarity": "rare",
+      "emoji": "🌑",
+      "description": "Adaga forjada nas sombras. Mata sem fazer barulho.",
+      "level": 12,
+      "stats": {
+        "physicalDamage": 32,
+        "magicDamage": 8,
+        "critBonus": 0.25,
+        "attackSpeed": 1.5
+      },
+      "requirements": {
+        "level": 12,
+        "agility": 18,
+        "luck": 10
+      },
+      "specialEffect": "Críticos causam 200% de dano ao invés de 150%",
+      "sellPrice": 800,
+      "stackable": false
+    },
+    "warhammer": {
+      "id": "warhammer",
+      "name": "Martelo de Guerra",
+      "type": "weapon",
+      "weaponType": "hammer",
+      "rarity": "uncommon",
+      "emoji": "🔨",
+      "description": "Martelo pesado que esmaga armaduras. Lento mas devastador.",
+      "level": 5,
+      "stats": {
+        "physicalDamage": 30,
+        "magicDamage": 0,
+        "critBonus": 0.03,
+        "attackSpeed": 0.7
+      },
+      "requirements": {
+        "level": 5,
+        "strength": 14,
+        "vitality": 8
+      },
+      "specialEffect": "Ignora 20% da defesa do inimigo",
+      "sellPrice": 220,
+      "stackable": false
+    },
+    "holy_mace": {
+      "id": "holy_mace",
+      "name": "Maça Sagrada",
+      "type": "weapon",
+      "weaponType": "mace",
+      "rarity": "rare",
+      "emoji": "⚒️",
+      "description": "Maça abençoada pelos deuses. Brilha com luz divina.",
+      "level": 9,
+      "stats": {
+        "physicalDamage": 25,
+        "magicDamage": 18,
+        "critBonus": 0.06,
+        "attackSpeed": 0.9
+      },
+      "requirements": {
+        "level": 9,
+        "strength": 12,
+        "charisma": 10
+      },
+      "specialEffect": "+40% de dano contra mortos-vivos e demônios",
+      "sellPrice": 500,
+      "stackable": false
+    },
+    "battle_axe": {
+      "id": "battle_axe",
+      "name": "Machado de Batalha",
+      "type": "weapon",
+      "weaponType": "axe",
+      "rarity": "uncommon",
+      "emoji": "🪓",
+      "description": "Machado de guerra usado por bárbaros. Corta carne e osso com facilidade.",
+      "level": 4,
+      "stats": {
+        "physicalDamage": 26,
+        "magicDamage": 0,
+        "critBonus": 0.10,
+        "attackSpeed": 0.8
+      },
+      "requirements": {
+        "level": 4,
+        "strength": 12
+      },
+      "sellPrice": 150,
+      "stackable": false
+    },
+    "executioners_axe": {
+      "id": "executioners_axe",
+      "name": "Machado do Carrasco",
+      "type": "weapon",
+      "weaponType": "axe",
+      "rarity": "rare",
+      "emoji": "🪓",
+      "description": "Machado gigante usado para execuções. Uma lâmina, um golpe, uma morte.",
+      "level": 11,
+      "stats": {
+        "physicalDamage": 48,
+        "magicDamage": 0,
+        "critBonus": 0.15,
+        "attackSpeed": 0.6
+      },
+      "requirements": {
+        "level": 11,
+        "strength": 20,
+        "vitality": 10
+      },
+      "specialEffect": "30% chance de causar sangramento grave (15 dano por turno durante 3 turnos)",
+      "sellPrice": 720,
+      "stackable": false
+    },
+    "crystal_rapier": {
+      "id": "crystal_rapier",
+      "name": "Florete de Cristal",
+      "type": "weapon",
+      "weaponType": "rapier",
+      "rarity": "epic",
+      "emoji": "⚡",
+      "description": "Florete feito de cristal puro. Leve, rápido e mortal.",
+      "level": 13,
+      "stats": {
+        "physicalDamage": 28,
+        "magicDamage": 22,
+        "critBonus": 0.20,
+        "attackSpeed": 1.6
+      },
+      "requirements": {
+        "level": 13,
+        "agility": 20,
+        "intelligence": 12
+      },
+      "specialEffect": "Cada ataque acumulativo aumenta a velocidade em 5% (max 25%)",
+      "sellPrice": 1100,
+      "stackable": false
+    },
+    "dragon_fang_spear": {
+      "id": "dragon_fang_spear",
+      "name": "Lança Presa de Dragão",
+      "type": "weapon",
+      "weaponType": "spear",
+      "rarity": "legendary",
+      "emoji": "🐉",
+      "description": "Lança forjada com uma presa de dragão ancestral. Perfura qualquer armadura.",
+      "level": 15,
+      "stats": {
+        "physicalDamage": 52,
+        "magicDamage": 28,
+        "critBonus": 0.18,
+        "attackSpeed": 1.1
+      },
+      "requirements": {
+        "level": 15,
+        "strength": 18,
+        "agility": 15,
+        "vitality": 12
+      },
+      "specialEffect": "Ignora 40% da defesa. +100% de dano contra dragões.",
+      "sellPrice": 2500,
+      "stackable": false
+    }
   },
   
   "chests": {
